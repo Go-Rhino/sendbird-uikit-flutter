@@ -636,7 +636,7 @@ class SBUMessageListItemComponentState
                 if (message.isReplyToChannel == false &&
                     message.parentMessageId == null)
                   Padding(
-                    padding: const EdgeInsets.only(left: 12, bottom: 4),
+                    padding: const EdgeInsets.only(left: 12, bottom: 6),
                     child: SBUTextComponent(
                       text: widget.getNickname(message.sender, strings),
                       textType: SBUTextType.caption1,
@@ -1015,7 +1015,7 @@ class SBUMessageListItemComponentState
                                     child: SBUTextComponent(
                                       text: message.message,
                                       textType: SBUTextType.body3,
-                                      textColorType: SBUTextColorType.message,
+                                      textColorType: SBUTextColorType.myMessage,
                                       textOverflowType: null,
                                       maxLines: null,
                                     ),
