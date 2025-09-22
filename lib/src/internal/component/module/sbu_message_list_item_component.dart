@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
@@ -652,6 +653,7 @@ class SBUMessageListItemComponentState
                     }
                   },
                   onLongPress: () async {
+                    widget.onListItemClicked?.call(collection.channel, message);
                     return;
                     widget.unfocus();
                     await showModalBottomSheet(
@@ -859,6 +861,7 @@ class SBUMessageListItemComponentState
                 }
               },
               onLongPress: () async {
+                widget.onListItemClicked?.call(collection.channel, message);
                 return;
                 if (message.sendingStatus == SendingStatus.succeeded) {
                   widget.unfocus();
