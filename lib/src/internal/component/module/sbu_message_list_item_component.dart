@@ -652,6 +652,7 @@ class SBUMessageListItemComponentState
                     }
                   },
                   onLongPress: () async {
+                    return;
                     widget.unfocus();
                     await showModalBottomSheet(
                       context: context,
@@ -858,6 +859,7 @@ class SBUMessageListItemComponentState
                 }
               },
               onLongPress: () async {
+                return;
                 if (message.sendingStatus == SendingStatus.succeeded) {
                   widget.unfocus();
                   await showModalBottomSheet(
@@ -1134,6 +1136,7 @@ class SBUMessageListItemComponentState
                     }
                   },
                   onLongPress: () async {
+                    return;
                     if (!SBUReactionManager()
                             .isReactionAvailable(collection.channel, message) &&
                         SendbirdUIKit().downloadFile == null &&
@@ -1356,6 +1359,7 @@ class SBUMessageListItemComponentState
                 }
               },
               onLongPress: () async {
+                return;
                 if (message.sendingStatus == SendingStatus.succeeded) {
                   if (!SBUReactionManager()
                           .isReactionAvailable(collection.channel, message) &&
