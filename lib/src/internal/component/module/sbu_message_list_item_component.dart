@@ -134,6 +134,20 @@ class SBUMessageListItemComponentState
       }
     }
 
+    // MARK: rhino updated
+    String formatPtBrTitleCase(DateTime date) {
+      final raw = DateFormat('EEE, MMM dd').format(date); // "qua., out. 15"
+      final noDots = raw.replaceAll('.', ''); // "qua, out 15"
+      // Capitalize each word from the letters tokens:
+      final pretty = noDots
+          .split(' ')
+          .map((word) =>
+              '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}')
+          .join(' ');
+
+      return pretty; // "Qua, Out 15"
+    }
+
     Widget messageWidgetWithDay = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -155,8 +169,9 @@ class SBUMessageListItemComponentState
                 borderRadius: BorderRadius.circular(10),
               ),
               child: SBUTextComponent(
-                text: DateFormat('EEE, MMM dd').format(
-                    DateTime.fromMillisecondsSinceEpoch(message.createdAt)),
+                text: formatPtBrTitleCase(
+                  DateTime.fromMillisecondsSinceEpoch(message.createdAt),
+                ),
                 textType: SBUTextType.caption1,
                 textColorType: SBUTextColorType.messageDate,
               ),
@@ -538,7 +553,9 @@ class SBUMessageListItemComponentState
   }
 
   String _messageCreatedAtString(BaseMessage message) {
-    return DateFormat('h:mm a')
+    // MARK: rhino updated
+    // 24h format: HH:mm
+    return DateFormat('HH:mm')
         .format(DateTime.fromMillisecondsSinceEpoch(message.createdAt));
   }
 
