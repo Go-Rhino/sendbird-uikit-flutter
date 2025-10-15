@@ -29,11 +29,33 @@ class SBUImageComponent extends SBUStatelessComponent {
       imageBuilder: (context, imageProvider) => Container(
         decoration: BoxDecoration(
           image: DecorationImage(
+            invertColors: true,
             image: imageProvider,
             fit: BoxFit.cover,
           ),
         ),
       ),
+      progressIndicatorBuilder: (context, url, downloadProgress) {
+        print('UPDEBUG: $downloadProgress for $url');
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            // 1. The Placeholder widget (e.g., a grey container or an icon)
+            Container(
+              color: Colors.green, // Or any placeholder color you want
+              // You could also use an Icon as a placeholder:
+              // child: Icon(Icons.image_outlined, color: Colors.grey[400]),
+            ),
+
+            // 2. The CircularProgressIndicator that sits on top
+            CircularProgressIndicator(
+              value: downloadProgress.progress,
+              color: Colors.blue, // Customize the indicator color
+              strokeWidth: 2.0, // Customize the indicator thickness
+            ),
+          ],
+        );
+      },
       errorWidget: (context, url, error) => errorWidget ?? Container(),
       // Check
       fadeOutDuration: Duration.zero,
