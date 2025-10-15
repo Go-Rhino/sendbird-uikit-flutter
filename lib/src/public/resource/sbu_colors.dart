@@ -52,6 +52,8 @@ class SBUColors {
   static Color darkThemeTextLowEmphasis = const Color(0x61FFFFFF); // Dark-03
   static Color darkThemeTextDisabled = const Color(0x1FFFFFFF); // Dark-04
 
+  static Color fileImageStroke = const Color(0xFFE1E0E8);
+
   /// Sets colors.
   static void setColors({
     required Color primaryExtraDark,
@@ -93,6 +95,7 @@ class SBUColors {
     required Color darkThemeTextMidEmphasis,
     required Color darkThemeTextLowEmphasis,
     required Color darkThemeTextDisabled,
+    required Color fileImageStroke,
   }) {
     SBUColors.primaryExtraDark = primaryExtraDark;
     SBUColors.primaryDark = primaryDark;
@@ -133,5 +136,6 @@ class SBUColors {
     SBUColors.darkThemeTextMidEmphasis = darkThemeTextMidEmphasis;
     SBUColors.darkThemeTextLowEmphasis = darkThemeTextLowEmphasis;
     SBUColors.darkThemeTextDisabled = darkThemeTextDisabled;
+    SBUColors.fileImageStroke = fileImageStroke;
   }
 }

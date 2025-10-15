@@ -35,6 +35,7 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
   final void Function(int messageCollectionNo)? onInfoButtonClicked;
   final void Function(GroupChannel)? on1On1ChannelCreated;
   final void Function(GroupChannel, BaseMessage)? onListItemClicked;
+  final void Function(User)? onUserIconClicked;
   final double scrollExtentToTriggerPreloading;
   final double cacheExtent;
 
@@ -97,6 +98,7 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
     this.onInfoButtonClicked,
     this.on1On1ChannelCreated,
     this.onListItemClicked,
+    this.onUserIconClicked,
     this.scrollExtentToTriggerPreloading =
         defaultScrollExtentToTriggerPreloading,
     this.cacheExtent = defaultCacheExtent,
@@ -220,8 +222,11 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
           if (checkOnPostFrame) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
               if (collection.messageList.isNotEmpty) {
-                if (scrollController.position.maxScrollExtent == 0) {
+                if (scrollController.position.hasContentDimensions &&
+                    scrollController.position.maxScrollExtent == 0) {
                   await _loadPrevious(collection);
+
+                  if (!mounted) return;
                 }
 
                 if (!_streamController.isClosed) {
@@ -229,6 +234,8 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                 }
 
                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  if (!mounted) return;
+
                   if (widget.onScrollControllerReady != null) {
                     widget.onScrollControllerReady!(scrollController);
                   }
@@ -419,6 +426,7 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                       messageIndex: index,
                       on1On1ChannelCreated: widget.on1On1ChannelCreated,
                       onListItemClicked: widget.onListItemClicked,
+                      onUserIconClicked: widget.onUserIconClicked,
                       onParentMessageClicked: (parentMessage) async {
                         if (isClickedParentMessageAnimating) {
                           return;
