@@ -3,6 +3,7 @@
 import 'package:flutter/painting.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_colors.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_theme_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum SBUTextType {
   heading1,
@@ -29,6 +30,7 @@ enum SBUTextColorType {
   text04, // [light] lightThemeTextDisabled, [dark] darkThemeTextDisabled
   badge, // [light] darkThemeTextHighEmphasis, [dark] lightThemeTextHighEmphasis
   message, // [light] darkThemeTextHighEmphasis, [dark] lightThemeTextHighEmphasis
+  myMessage, // [light] darkThemeTextHighEmphasis, [dark] lightThemeTextHighEmphasis
   toast, // [light] darkThemeTextHighEmphasis, [dark] lightThemeTextHighEmphasis
   messageEdited, // [light] darkThemeTextMidEmphasis, [dark] lightThemeTextMidEmphasis
   messageDate, // [light] darkThemeTextHighEmphasis, [dark] darkThemeTextMidEmphasis
@@ -37,7 +39,7 @@ enum SBUTextColorType {
 }
 
 class SBUTextStyles {
-  static String fontFamily = 'Roboto';
+  static String fontFamily = 'SF Pro Display';
 
   static TextStyle getTextStyle({
     required SBUTheme theme,
@@ -116,9 +118,11 @@ class SBUTextStyles {
       case SBUTextType.body3:
         return TextStyle(
           fontFamily: fontFamily,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w400,
-          fontSize: 14,
-          height: 1.428,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 0.14,
+          height: 20 / 14,
           color: color,
           decorationThickness: 0,
           leadingDistribution: TextLeadingDistribution.even,
@@ -137,9 +141,11 @@ class SBUTextStyles {
       case SBUTextType.caption1:
         return TextStyle(
           fontFamily: fontFamily,
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-          height: 1,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 0.0,
+          height: 16 / 12,
           color: color,
           decorationThickness: 0,
           leadingDistribution: TextLeadingDistribution.even,
@@ -168,8 +174,8 @@ class SBUTextStyles {
         return TextStyle(
           fontFamily: fontFamily,
           fontWeight: FontWeight.w400,
-          fontSize: 11,
-          height: 1.090,
+          fontSize: 12.sp,
+          height: 16 / 12,
           color: color,
           decorationThickness: 0,
           leadingDistribution: TextLeadingDistribution.even,
@@ -239,6 +245,13 @@ class SBUTextStyles {
             return SBUColors.darkThemeTextHighEmphasis;
           case SBUTheme.dark:
             return SBUColors.lightThemeTextHighEmphasis;
+        }
+      case SBUTextColorType.myMessage:
+        switch (theme) {
+          case SBUTheme.light:
+            return SBUColors.primaryLight;
+          case SBUTheme.dark:
+            return SBUColors.primaryLight;
         }
       case SBUTextColorType.messageEdited:
         switch (theme) {

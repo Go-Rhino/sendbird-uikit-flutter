@@ -6,6 +6,7 @@ import 'package:sendbird_uikit/sendbird_uikit.dart';
 import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUBadgeComponent extends SBUStatefulComponent {
   final int count;
@@ -30,7 +31,7 @@ class SBUBadgeComponentState extends State<SBUBadgeComponent> {
 
     final count = widget.count;
     final isLarge = widget.isLarge;
-    final height = widget._height;
+    final height = widget._height.h;
 
     final String number = count > 99 ? '99+' : count.toString();
     final text = SBUTextComponent(
@@ -50,11 +51,11 @@ class SBUBadgeComponentState extends State<SBUBadgeComponent> {
       height: height,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
         color: color,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
         child: text,
       ),
     );

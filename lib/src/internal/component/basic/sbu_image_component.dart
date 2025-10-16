@@ -2,8 +2,9 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sendbird_uikit/src/public/resource/sbu_colors.dart';
 
 class SBUImageComponent extends SBUStatelessComponent {
   final String imageUrl;
@@ -34,6 +35,19 @@ class SBUImageComponent extends SBUStatelessComponent {
           ),
         ),
       ),
+      progressIndicatorBuilder: (context, url, downloadProgress) {
+        return Center(
+          child: SizedBox(
+            width: 16.r,
+            height: 16.r,
+            child: CircularProgressIndicator(
+              value: downloadProgress.progress,
+              color: SBUColors.primaryMain,
+              strokeWidth: 1.4.r,
+            ),
+          ),
+        );
+      },
       errorWidget: (context, url, error) => errorWidget ?? Container(),
       // Check
       fadeOutDuration: Duration.zero,

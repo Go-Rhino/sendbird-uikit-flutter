@@ -7,6 +7,7 @@ import 'package:sendbird_uikit/sendbird_uikit.dart';
 import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_image_component.dart';
 import 'package:sendbird_uikit/src/internal/utils/sbu_reaction_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUBottomSheetReactionAddComponent extends SBUStatefulComponent {
   final BaseChannel? channel;
@@ -48,17 +49,17 @@ class SBUBottomSheetReactionAddComponentState
     return Container(
       decoration: BoxDecoration(
         color: isLightTheme ? SBUColors.background50 : SBUColors.background500,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.r),
+          topRight: Radius.circular(8.r),
         ),
       ),
       child: Scrollbar(
         child: SingleChildScrollView(
           child: Container(
             margin:
-                const EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
-            height: columnCount * 60,
+               EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h,),
+            height: columnCount * 60.h,
             child: Column(
               children: [
                 ...List<Row>.generate(columnCount, (index) {
@@ -76,8 +77,8 @@ class SBUBottomSheetReactionAddComponentState
                           .map(
                         (emoji) {
                           return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 6, top: 8, right: 6, bottom: 8),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6.w, vertical: 8.h,),
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
@@ -100,14 +101,14 @@ class SBUBottomSheetReactionAddComponentState
                                   })
                                           ? BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(8),
+                                                  BorderRadius.circular(8.r),
                                               color: isLightTheme
                                                   ? SBUColors.primaryExtraLight
                                                   : SBUColors.primaryDark)
                                           : null,
-                                  padding: const EdgeInsets.all(3),
-                                  width: 44,
-                                  height: 44,
+                                  padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 3.w),
+                                  width: 44.r,
+                                  height: 44.r,
                                   child: SBUImageComponent(
                                     imageUrl: emoji.url,
                                     cacheKey: emoji.key,

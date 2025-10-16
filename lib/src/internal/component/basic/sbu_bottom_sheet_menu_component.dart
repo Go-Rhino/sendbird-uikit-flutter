@@ -12,6 +12,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_image_component.
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
 import 'package:sendbird_uikit/src/internal/utils/sbu_reaction_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUBottomSheetMenuComponent extends SBUStatefulComponent {
   final BaseChannel? channel;
@@ -56,9 +57,9 @@ class SBUBottomSheetMenuComponentState
         decoration: BoxDecoration(
           color:
               isLightTheme ? SBUColors.background50 : SBUColors.background500,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(8),
-            topRight: Radius.circular(8),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8.r),
+            topRight: Radius.circular(8.r),
           ),
         ),
         child: Column(
@@ -117,14 +118,14 @@ class SBUBottomSheetMenuComponentState
     required bool isLightTheme,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, bottom: 12),
+      padding: EdgeInsets.symmetric(vertical: 12.h),
       child: Row(
         children: [
           index < (iconNames?.length ?? 0)
               ? Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: EdgeInsets.only(left: 16.w),
                   child: SBUIconComponent(
-                    iconSize: 24,
+                    iconSize: 24.r,
                     iconData: iconNames![index],
                     iconColor: isDisabled
                         ? (isLightTheme
@@ -138,7 +139,7 @@ class SBUBottomSheetMenuComponentState
               : Container(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24),
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: SBUTextComponent(
                 text: buttonNames[index],
                 textType: SBUTextType.body3,
@@ -172,15 +173,15 @@ class SBUBottomSheetMenuComponentState
     }
 
     return Container(
-      margin: const EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
-      height: 44,
+      margin: EdgeInsets.only(left: 12.w, top: 12.h, right: 12.w, bottom: 16.h),
+      height: 44.h,
       child: Row(
         children: [
           ...emojiList
               .map(
                 (emoji) {
                   return Padding(
-                    padding: const EdgeInsets.only(left: 6, right: 6),
+                    padding: EdgeInsets.symmetric(horizontal: 6.w),
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
@@ -200,14 +201,14 @@ class SBUBottomSheetMenuComponentState
                             return false;
                           })
                               ? BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8.r),
                                   color: isLightTheme
                                       ? SBUColors.primaryExtraLight
                                       : SBUColors.primaryDark)
                               : null,
-                          padding: const EdgeInsets.all(3),
-                          width: 44,
-                          height: 44,
+                          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+                          width: 44.r,
+                          height: 44.r,
                           child: SBUImageComponent(
                             imageUrl: emoji.url,
                             cacheKey: emoji.key,
@@ -222,7 +223,7 @@ class SBUBottomSheetMenuComponentState
               .toList(),
           if (isExpandableEmoji)
             Padding(
-              padding: const EdgeInsets.only(left: 6, right: 6),
+              padding: EdgeInsets.symmetric(horizontal: 6.w),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -231,10 +232,10 @@ class SBUBottomSheetMenuComponentState
                     await showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8),
+                          topLeft: Radius.circular(8.r),
+                          topRight: Radius.circular(8.r),
                         ),
                       ),
                       builder: (context) {
@@ -246,9 +247,9 @@ class SBUBottomSheetMenuComponentState
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(3),
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
                     child: SBUIconComponent(
-                      iconSize: 38,
+                      iconSize: 38.r,
                       iconData: SBUIcons.emoji,
                       iconColor: isLightTheme
                           ? SBUColors.lightThemeTextLowEmphasis

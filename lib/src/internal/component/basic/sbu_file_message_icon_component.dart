@@ -9,6 +9,7 @@ import 'package:sendbird_uikit/src/internal/utils/sbu_thumbnail_manager.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_colors.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_icons.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_theme_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUFileMessageIconComponent extends SBUStatefulComponent {
   final double iconSize;
@@ -42,7 +43,7 @@ class SBUFileMessageIconComponentState
             widget.isReplyMessageToChannel(fileMessage);
 
         return ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
           child: SizedBox(
             width: iconSize,
             height: iconSize,
@@ -58,7 +59,7 @@ class SBUFileMessageIconComponentState
         );
       case SBUFileType.other:
         return ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
           child: SizedBox(
             width: iconSize,
             height: iconSize,
@@ -67,7 +68,7 @@ class SBUFileMessageIconComponentState
               backgroundColor: isLightTheme
                   ? SBUColors.background200
                   : SBUColors.background500,
-              iconSize: 20,
+              iconSize: 20.r,
               iconData: SBUIcons.fileDocument,
               iconColor: isLightTheme
                   ? SBUColors.lightThemeTextMidEmphasis

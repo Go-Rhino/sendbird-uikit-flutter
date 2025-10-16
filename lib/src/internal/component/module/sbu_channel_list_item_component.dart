@@ -11,6 +11,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.d
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_theme_provider.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUChannelListItemComponent extends SBUStatefulComponent {
   final double width;
@@ -102,7 +103,7 @@ class SBUChannelListItemComponentState
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 child: avatar,
               ),
               Expanded(
@@ -111,7 +112,7 @@ class SBUChannelListItemComponentState
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 10, right: 16),
+                        padding: EdgeInsets.only(top: 10.h, right: 16.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -126,36 +127,36 @@ class SBUChannelListItemComponentState
                                       if (preTitleIcon != null)
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(right: 4),
+                                              EdgeInsets.only(right: 4.w),
                                           child: preTitleIcon,
                                         ),
                                       Flexible(
                                         child: Padding(
                                           padding:
-                                              const EdgeInsets.only(right: 4),
+                                              EdgeInsets.only(right: 4.w),
                                           child: title,
                                         ),
                                       ),
                                       userCount != null
                                           ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 1, // Check
-                                                right: 4,
+                                              padding: EdgeInsets.only(
+                                                top: 1.h, // Check
+                                                right: 4.w,
                                               ),
                                               child: userCount,
                                             )
                                           : Container(),
                                       postTitleIcon != null
                                           ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 4),
+                                              padding: EdgeInsets.only(
+                                                  right: 4.w),
                                               child: postTitleIcon,
                                             )
                                           : Container(),
                                       postTitleIcon2 != null
                                           ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 4),
+                                              padding: EdgeInsets.only(
+                                                  right: 4.w),
                                               child: postTitleIcon2,
                                             )
                                           : Container(),
@@ -163,8 +164,8 @@ class SBUChannelListItemComponentState
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 3, // Check
+                                  padding: EdgeInsets.only(
+                                    top: 3.h, // Check
                                   ),
                                   child: Row(
                                       crossAxisAlignment:
@@ -172,8 +173,8 @@ class SBUChannelListItemComponentState
                                       children: [
                                         preDateIcon != null
                                             ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 4),
+                                                padding: EdgeInsets.only(
+                                                    right: 4.w),
                                                 child: preDateIcon,
                                               )
                                             : Container(),
@@ -182,18 +183,18 @@ class SBUChannelListItemComponentState
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4.h),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 if (fileIcon != null)
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 4),
+                                    padding: EdgeInsets.only(right: 4.w),
                                     child: fileIcon,
                                   ),
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsets.only(right: 4),
+                                    padding: EdgeInsets.only(right: 4.w),
                                     child: lastMessage,
                                   ),
                                 ),
@@ -205,8 +206,8 @@ class SBUChannelListItemComponentState
                       ),
                     ),
                     Divider(
-                      height: 1,
-                      thickness: 1,
+                      height: 1.h,
+                      thickness: 1.h,
                       color: isLightTheme
                           ? SBUColors.lightThemeTextDisabled
                           : SBUColors.darkThemeTextDisabled,

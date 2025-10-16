@@ -16,6 +16,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_button_comp
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/provider/sbu_message_collection_provider.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUMessageInputComponent extends SBUStatefulComponent {
   final int messageCollectionNo;
@@ -111,23 +112,23 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
         color: Colors.transparent,
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 12, top: 10, right: 12, bottom: 10),
+              EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (replyingToMessage != null)
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 6, top: 2, right: 4, bottom: 12),
+                  padding: EdgeInsets.only(
+                      left: 6.w, top: 2.h, right: 4.w, bottom: 12.h,),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       if (replyingToMessage.messageType == MessageType.file)
                         Padding(
-                          padding: const EdgeInsets.only(right: 8),
+                          padding: EdgeInsets.only(right: 8.w),
                           child: SBUFileMessageIconComponent(
-                            iconSize: 32,
+                            iconSize: 32.r,
                             fileMessage: replyingToMessage as FileMessage,
                           ),
                         ),
@@ -141,7 +142,7 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                               textType: SBUTextType.caption1,
                               textColorType: SBUTextColorType.text01,
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8.h),
                             SBUTextComponent(
                               text: (replyingToMessage is FileMessage)
                                   ? replyingToMessage.name ?? ''
@@ -152,11 +153,11 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       SBUIconButtonComponent(
-                        iconButtonSize: 24,
+                        iconButtonSize: 24.r,
                         icon: SBUIconComponent(
-                          iconSize: 16,
+                          iconSize: 16.r,
                           iconData: SBUIcons.close,
                           iconColor: isLightTheme
                               ? SBUColors.lightThemeTextHighEmphasis
@@ -186,9 +187,9 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                       ? Container()
                       : (isDisabled
                           ? Padding(
-                              padding: const EdgeInsets.only(right: 12),
+                              padding: EdgeInsets.only(right: 12.w),
                               child: SBUIconComponent(
-                                iconSize: 24,
+                                iconSize: 24.r,
                                 iconData: SBUIcons.add,
                                 iconColor: isLightTheme
                                     ? SBUColors.lightThemeTextDisabled
@@ -197,11 +198,11 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                             )
                           : editingMessage == null
                               ? Padding(
-                                  padding: const EdgeInsets.only(right: 8),
+                                  padding: EdgeInsets.only(right: 8.w),
                                   child: SBUIconButtonComponent(
-                                    iconButtonSize: 32,
+                                    iconButtonSize: 32.r,
                                     icon: SBUIconComponent(
-                                      iconSize: 24,
+                                      iconSize: 24.r,
                                       iconData: SBUIcons.add,
                                       iconColor: isLightTheme
                                           ? SBUColors.primaryMain
@@ -212,10 +213,10 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                                       await showModalBottomSheet(
                                         context: context,
                                         isScrollControlled: true,
-                                        shape: const RoundedRectangleBorder(
+                                        shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
+                                            topLeft: Radius.circular(8.r),
+                                            topRight: Radius.circular(8.r),
                                           ),
                                         ),
                                         builder: (context) {
@@ -344,7 +345,7 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.r),
                         color: isLightTheme
                             ? SBUColors.background100
                             : SBUColors.background400,
@@ -353,8 +354,8 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                       child: TextField(
                         controller: textEditingController,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                              left: 16, top: 8, right: 16, bottom: 8),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 8.h,),
                           border: InputBorder.none,
                           isCollapsed: true,
                           hintText: amIFrozen
@@ -411,14 +412,14 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                   ),
                   // Fix a bug like `ㄱㅏ` on web temporarily.
                   if (kIsWeb && (!showSendButton || editingMessage != null))
-                    const SizedBox(width: 40),
+                     SizedBox(width: 40.w),
                   if (showSendButton && editingMessage == null)
                     Padding(
-                      padding: const EdgeInsets.only(left: 8),
+                      padding: EdgeInsets.only(left: 8.w),
                       child: SBUIconButtonComponent(
-                        iconButtonSize: 32,
+                        iconButtonSize: 32.r,
                         icon: SBUIconComponent(
-                          iconSize: 24,
+                          iconSize: 24.r,
                           iconData: SBUIcons.send,
                           iconColor: isLightTheme
                               ? SBUColors.primaryMain
@@ -461,12 +462,12 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
               ),
               if (editingMessage != null)
                 Padding(
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: EdgeInsets.only(top: 8.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SBUTextButtonComponent(
-                        height: 32,
+                        height: 32.h,
                         text: SBUTextComponent(
                           text: strings.cancel,
                           textType: SBUTextType.button,
@@ -485,10 +486,10 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                             // TODO: Check error
                           });
                         },
-                        padding: const EdgeInsets.all(8),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                       ),
                       SBUTextButtonComponent(
-                        height: 32,
+                        height: 32.h,
                         backgroundColor: isLightTheme
                             ? SBUColors.primaryMain
                             : SBUColors.primaryLight,
@@ -522,7 +523,7 @@ class SBUMessageInputComponentState extends State<SBUMessageInputComponent> {
                             // TODO: Check error
                           });
                         },
-                        padding: const EdgeInsets.all(8),
+                        padding:  EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                       ),
                     ],
                   ),

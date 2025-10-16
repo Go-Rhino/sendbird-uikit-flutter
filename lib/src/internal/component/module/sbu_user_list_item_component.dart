@@ -12,6 +12,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_button_comp
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum SBUModerationType {
   members,
@@ -75,10 +76,10 @@ class SBUUserListItemComponentState extends State<SBUUserListItemComponent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             child: widget.getAvatarComponent(
               isLightTheme: isLightTheme,
-              size: 36,
+              size: 36.r,
               user: user,
             ),
           ),
@@ -88,12 +89,12 @@ class SBUUserListItemComponentState extends State<SBUUserListItemComponent> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 12),
+                    padding: EdgeInsets.only(right: 12.w),
                     child: Row(
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 4),
+                            padding: EdgeInsets.only(right: 4.w),
                             child: SBUTextComponent(
                               text: name,
                               textType: SBUTextType.subtitle2,
@@ -103,7 +104,7 @@ class SBUUserListItemComponentState extends State<SBUUserListItemComponent> {
                         ),
                         if (isOperator)
                           Padding(
-                            padding: const EdgeInsets.only(right: 4),
+                            padding: EdgeInsets.only(right: 4.w),
                             child: SBUTextComponent(
                               text: strings.operator,
                               textType: SBUTextType.body2,
@@ -114,9 +115,9 @@ class SBUUserListItemComponentState extends State<SBUUserListItemComponent> {
                           Material(
                             color: Colors.transparent,
                             child: SBUIconButtonComponent(
-                              iconButtonSize: 32,
+                              iconButtonSize: 32.r,
                               icon: SBUIconComponent(
-                                iconSize: 24,
+                                iconSize: 24.r,
                                 iconData: SBUIcons.more,
                                 iconColor: isYou
                                     ? isLightTheme
@@ -214,8 +215,8 @@ class SBUUserListItemComponentState extends State<SBUUserListItemComponent> {
                   ),
                 ),
                 Divider(
-                  height: 1,
-                  thickness: 1,
+                  height: 1.h,
+                  thickness: 1.h,
                   color: isLightTheme
                       ? SBUColors.lightThemeTextDisabled
                       : SBUColors.darkThemeTextDisabled,

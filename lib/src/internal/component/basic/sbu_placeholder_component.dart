@@ -6,6 +6,7 @@ import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.da
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUPlaceholderComponent extends SBUStatelessComponent {
   final bool isLightTheme;
@@ -27,27 +28,27 @@ class SBUPlaceholderComponent extends SBUStatelessComponent {
   Widget build(BuildContext context) {
     final retryWidget = retryText != null
         ? Padding(
-            padding: const EdgeInsets.only(top: 16),
+            padding: EdgeInsets.only(top: 16.h),
             child: Material(
               color: Colors.transparent,
               child: InkWell(
                 onTap: onRetryButtonClicked,
                 child: Container(
-                  width: 84,
-                  height: 32,
-                  padding: const EdgeInsets.only(
-                      left: 8, top: 4, right: 8, bottom: 4),
+                  width: 84.w,
+                  height: 32.h,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 8.w, vertical: 4.h),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SBUIconComponent(
-                        iconSize: 24,
+                        iconSize: 24.r,
                         iconData: SBUIcons.refresh,
                         iconColor: isLightTheme
                             ? SBUColors.primaryMain
                             : SBUColors.primaryLight,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       SBUTextComponent(
                         text: retryText!,
                         textType: SBUTextType.body3,
@@ -72,7 +73,7 @@ class SBUPlaceholderComponent extends SBUStatelessComponent {
                 ? SBUColors.lightThemeTextLowEmphasis
                 : SBUColors.darkThemeTextLowEmphasis,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           SBUTextComponent(
             text: text,
             textType: SBUTextType.body3,

@@ -7,6 +7,7 @@ import 'package:sendbird_uikit/sendbird_uikit.dart';
 import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUReactionMemberListItemComponent extends SBUStatefulComponent {
   final double width;
@@ -52,7 +53,7 @@ class SBUReactionMemberListItemComponentState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
             child: widget.getAvatarComponent(
               isLightTheme: isLightTheme,
               size: 36,
@@ -65,7 +66,7 @@ class SBUReactionMemberListItemComponentState
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 16),
+                    padding: EdgeInsets.only(right: 16.w),
                     child: Row(
                       children: [
                         Expanded(
