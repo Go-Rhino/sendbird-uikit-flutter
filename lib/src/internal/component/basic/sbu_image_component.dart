@@ -2,8 +2,9 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sendbird_uikit/src/public/resource/sbu_colors.dart';
 
 class SBUImageComponent extends SBUStatelessComponent {
   final String imageUrl;
@@ -29,31 +30,22 @@ class SBUImageComponent extends SBUStatelessComponent {
       imageBuilder: (context, imageProvider) => Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            invertColors: true,
             image: imageProvider,
             fit: BoxFit.cover,
           ),
         ),
       ),
       progressIndicatorBuilder: (context, url, downloadProgress) {
-        print('UPDEBUG: $downloadProgress for $url');
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            // 1. The Placeholder widget (e.g., a grey container or an icon)
-            Container(
-              color: Colors.green, // Or any placeholder color you want
-              // You could also use an Icon as a placeholder:
-              // child: Icon(Icons.image_outlined, color: Colors.grey[400]),
-            ),
-
-            // 2. The CircularProgressIndicator that sits on top
-            CircularProgressIndicator(
+        return Center(
+          child: SizedBox(
+            width: 16.r,
+            height: 16.r,
+            child: CircularProgressIndicator(
               value: downloadProgress.progress,
-              color: Colors.blue, // Customize the indicator color
-              strokeWidth: 2.0, // Customize the indicator thickness
+              color: SBUColors.primaryMain,
+              strokeWidth: 1.4.r,
             ),
-          ],
+          ),
         );
       },
       errorWidget: (context, url, error) => errorWidget ?? Container(),

@@ -58,7 +58,7 @@ class SBUDialogInputComponentState extends State<SBUDialogInputComponent> {
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(4.r),
       ),
       backgroundColor:
           isLightTheme ? SBUColors.background50 : SBUColors.background500,
