@@ -21,6 +21,7 @@ import 'package:sendbird_uikit/src/internal/component/module/sbu_message_list_it
 import 'package:sendbird_uikit/src/internal/provider/sbu_message_collection_provider.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
 import 'package:sendbird_uikit/src/internal/utils/sbu_mark_as_unread_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// SBUGroupChannelScreen
 class SBUGroupChannelScreen extends SBUStatefulComponent {
@@ -44,7 +45,8 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )? customHeader;
+  )?
+  customHeader;
 
   final Widget Function(
     BuildContext context,
@@ -53,41 +55,47 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
     MessageCollection collection,
     int index,
     BaseMessage message,
-  )? customListItem;
+  )?
+  customListItem;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )? customMessageInput;
+  )?
+  customMessageInput;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )? customLoadingBody;
+  )?
+  customLoadingBody;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )? customEmptyBody;
+  )?
+  customEmptyBody;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
-  )? customErrorScreen;
+  )?
+  customErrorScreen;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )? customFrozenChannel;
+  )?
+  customFrozenChannel;
 
   const SBUGroupChannelScreen({
     required this.channelUrl,
@@ -179,11 +187,14 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
 
   Future<void> _initialize() async {
     final collectionProvider = SBUMessageCollectionProvider();
-    final channel = await GroupChannel.getChannelFromCache(widget.channelUrl) ??
+    final channel =
+        await GroupChannel.getChannelFromCache(widget.channelUrl) ??
         await GroupChannel.getChannel(widget.channelUrl);
 
     collectionProvider.setMyLastRead(
-        channel.channelUrl, channel.myLastRead); // Check
+      channel.channelUrl,
+      channel.myLastRead,
+    ); // Check
 
     collectionNo = collectionProvider.add(
       channel: channel,
@@ -204,8 +215,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
 
     if (collection != null) {
       if (_isNewLineExistsInChannel(collection)) {
-        SBUMessageCollectionProvider()
-            .enableNewLine(collection.channel.channelUrl); // Check
+        SBUMessageCollectionProvider().enableNewLine(
+          collection.channel.channelUrl,
+        ); // Check
       }
 
       await collection.initialize();
@@ -217,35 +229,38 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
           isLoading = false;
         });
 
-        runZonedGuarded(() async {
-          // Check if no scrollbar
-          if (checkOnPostFrame) {
-            WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-              if (collection.messageList.isNotEmpty) {
-                if (scrollController.position.hasContentDimensions &&
-                    scrollController.position.maxScrollExtent == 0) {
-                  await _loadPrevious(collection);
+        runZonedGuarded(
+          () async {
+            // Check if no scrollbar
+            if (checkOnPostFrame) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+                if (collection.messageList.isNotEmpty) {
+                  if (scrollController.position.hasContentDimensions &&
+                      scrollController.position.maxScrollExtent == 0) {
+                    await _loadPrevious(collection);
 
-                  if (!mounted) return;
-                }
-
-                if (!_streamController.isClosed) {
-                  _streamController.add(collection);
-                }
-
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                  if (!mounted) return;
-
-                  if (widget.onScrollControllerReady != null) {
-                    widget.onScrollControllerReady!(scrollController);
+                    if (!mounted) return;
                   }
-                });
-              }
-            });
-          }
-        }, (error, stack) {
-          // TODO: Check error
-        });
+
+                  if (!_streamController.isClosed) {
+                    _streamController.add(collection);
+                  }
+
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    if (!mounted) return;
+
+                    if (widget.onScrollControllerReady != null) {
+                      widget.onScrollControllerReady!(scrollController);
+                    }
+                  });
+                }
+              });
+            }
+          },
+          (error, stack) {
+            // TODO: Check error
+          },
+        );
       }
     }
   }
@@ -297,11 +312,7 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
       if (widget.customErrorScreen != null) {
         return widget.getDefaultContainer(
           isLightTheme,
-          child: widget.customErrorScreen!(
-            context,
-            theme,
-            strings,
-          ),
+          child: widget.customErrorScreen!(context, theme, strings),
         );
       }
       return widget.getDefaultContainer(
@@ -346,8 +357,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
     }
 
     if (collection != null) {
-      if (collectionProvider
-          .getCheckUnreadBadge(collection.channel.channelUrl)) {
+      if (collectionProvider.getCheckUnreadBadge(
+        collection.channel.channelUrl,
+      )) {
         collectionProvider.setCheckUnreadBadge(collection.channel.channelUrl);
         if (!_streamController.isClosed) {
           _streamController.add(collection);
@@ -359,8 +371,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
         ? SBUHeaderComponent(
             width: double.maxFinite,
             height: 56,
-            backgroundColor:
-                isLightTheme ? SBUColors.background50 : SBUColors.background500,
+            backgroundColor: isLightTheme
+                ? SBUColors.background50
+                : SBUColors.background500,
             title: SBUTextComponent(
               text: widget.getGroupChannelName(collection.channel, strings),
               textType: SBUTextType.heading2,
@@ -374,9 +387,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
             ),
             iconButton: widget.onInfoButtonClicked != null
                 ? SBUIconButtonComponent(
-                    iconButtonSize: 32,
+                    iconButtonSize: 32.r,
                     icon: SBUIconComponent(
-                      iconSize: 24,
+                      iconSize: 24.r,
                       iconData: SBUIcons.info,
                       iconColor: isLightTheme
                           ? SBUColors.primaryMain
@@ -433,9 +446,11 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                         }
 
                         int? foundIndex;
-                        for (int index = 0;
-                            index < collection.messageList.length;
-                            index++) {
+                        for (
+                          int index = 0;
+                          index < collection.messageList.length;
+                          index++
+                        ) {
                           if (collection.messageList[index].messageId ==
                               parentMessage.messageId) {
                             foundIndex = index;
@@ -462,9 +477,12 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                           isClickedParentMessageAnimating = false;
                         }
                       },
-                      key: Key(widget.getMessageCacheKey(
-                              collection.messageList[index]) ??
-                          ''),
+                      key: Key(
+                        widget.getMessageCacheKey(
+                              collection.messageList[index],
+                            ) ??
+                            '',
+                      ),
                     ),
                   );
 
@@ -475,7 +493,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                       builder: (context, child) {
                         return Transform.translate(
                           offset: Offset(
-                              0, _animationGap * (_animationController.value)),
+                            0,
+                            _animationGap * (_animationController.value),
+                          ),
                           child: listItem,
                         );
                       },
@@ -511,30 +531,25 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
     final body = collection == null
         ? widget.getDefaultContainer(isLightTheme)
         : isLoading && collection.messageList.isEmpty
-            ? (widget.customLoadingBody != null
-                ? widget.customLoadingBody!(
-                    context,
-                    theme,
-                    strings,
-                    collection,
-                  )
-                : widget.getDefaultContainer(
-                    isLightTheme,
-                    child: Center(
-                      child: SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          color: isLightTheme
-                              ? SBUColors.primaryMain
-                              : SBUColors.primaryLight,
-                          strokeWidth: 5.5,
-                        ),
+        ? (widget.customLoadingBody != null
+              ? widget.customLoadingBody!(context, theme, strings, collection)
+              : widget.getDefaultContainer(
+                  isLightTheme,
+                  child: Center(
+                    child: SizedBox(
+                      width: 50.r,
+                      height: 50.r,
+                      child: CircularProgressIndicator(
+                        color: isLightTheme
+                            ? SBUColors.primaryMain
+                            : SBUColors.primaryLight,
+                        strokeWidth: 5.5.r,
                       ),
                     ),
-                  ))
-            : (collection.messageList.isEmpty
-                ? (widget.customEmptyBody != null
+                  ),
+                ))
+        : (collection.messageList.isEmpty
+              ? (widget.customEmptyBody != null
                     ? widget.getDefaultContainer(
                         isLightTheme,
                         child: widget.customEmptyBody!(
@@ -552,13 +567,14 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                           text: strings.noMessages,
                         ),
                       ))
-                : list ?? widget.getDefaultContainer(isLightTheme));
+              : list ?? widget.getDefaultContainer(isLightTheme));
 
     final messageInput = collection != null
         ? SBUMessageInputComponent(
             messageCollectionNo: collectionNo!,
-            backgroundColor:
-                isLightTheme ? SBUColors.background50 : SBUColors.background600,
+            backgroundColor: isLightTheme
+                ? SBUColors.background50
+                : SBUColors.background600,
           )
         : null;
 
@@ -568,188 +584,244 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
         ? collectionProvider.getNewMessageCount(collection!.channel.channelUrl)
         : 0;
 
-    return Stack(children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          collection == null
-              ? widget.getDefaultContainer(isLightTheme)
-              : widget.customHeader != null
-                  ? widget.customHeader!(
-                      context,
-                      theme,
-                      strings,
-                      collection,
-                    )
-                  : header ??
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            collection == null
+                ? widget.getDefaultContainer(isLightTheme)
+                : widget.customHeader != null
+                ? widget.customHeader!(context, theme, strings, collection)
+                : header ??
                       Container(
                         color: isLightTheme
                             ? SBUColors.background50
                             : SBUColors.background500,
                       ),
-          Expanded(
-            child: Container(
-              color: isLightTheme
-                  ? SBUColors.background50
-                  : SBUColors.background600,
-              alignment: Alignment.bottomCenter,
-              child: body,
+            Expanded(
+              child: Container(
+                color: isLightTheme
+                    ? SBUColors.background50
+                    : SBUColors.background600,
+                alignment: Alignment.bottomCenter,
+                child: body,
+              ),
             ),
-          ),
-          collection == null
-              ? widget.getDefaultContainer(isLightTheme)
-              : widget.customMessageInput != null
-                  ? widget.customMessageInput!(
+            collection == null
+                ? widget.getDefaultContainer(isLightTheme)
+                : widget.customMessageInput != null
+                ? widget.customMessageInput!(
+                    context,
+                    theme,
+                    strings,
+                    collection,
+                  )
+                : messageInput ?? widget.getDefaultContainer(isLightTheme),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (isFrozenChannel)
+              collection == null
+                  ? widget.getDefaultContainer(isLightTheme)
+                  : widget.customFrozenChannel != null
+                  ? widget.customFrozenChannel!(
                       context,
                       theme,
                       strings,
                       collection,
                     )
-                  : messageInput ?? widget.getDefaultContainer(isLightTheme),
-        ],
-      ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (isFrozenChannel)
-            collection == null
-                ? widget.getDefaultContainer(isLightTheme)
-                : widget.customFrozenChannel != null
-                    ? widget.customFrozenChannel!(
-                        context,
-                        theme,
-                        strings,
-                        collection,
-                      )
-                    : Container(
-                        width: double.maxFinite,
-                        height: 24,
-                        margin:
-                            const EdgeInsets.only(left: 8, top: 64, right: 8),
-                        decoration: BoxDecoration(
-                          color: SBUColors.informationLight,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4)),
-                        ),
-                        child: Center(
-                          child: SBUTextComponent(
-                            text: strings.channelIsFrozen,
-                            textType: SBUTextType.caption2,
-                            textColorType: SBUTextColorType.information,
-                          ),
-                        ),
+                  : Container(
+                      width: double.maxFinite,
+                      height: 24.h,
+                      margin: EdgeInsets.only(left: 8.w, top: 64.h, right: 8.w),
+                      decoration: BoxDecoration(
+                        color: SBUColors.informationLight,
+                        borderRadius: BorderRadius.all(Radius.circular(4.r)),
                       ),
-          if (_showUnreadBadge && unreadMessageCount > 0)
-            Column(
-              children: [
-                const SizedBox(width: double.maxFinite),
-                Stack(
-                  alignment: Alignment.centerRight,
-                  children: [
-                    Container(
-                      height: 38,
-                      margin: EdgeInsets.only(
-                          left: 8, top: isFrozenChannel ? 8 : 64, right: 8),
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 16, right: 12),
-                        decoration: BoxDecoration(
-                          color: isLightTheme
-                              ? SBUColors.background50
-                              : SBUColors.background400,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
-                              blurRadius: 3,
-                              offset: const Offset(0, 0),
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.12),
-                              blurRadius: 1,
-                              offset: const Offset(0, 2),
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
-                              blurRadius: 5,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Flexible(
-                              child: SBUTextComponent(
-                                text: strings.unreadMessageCount(
-                                    unreadMessageCount.toString()),
-                                textType: SBUTextType.body2,
-                                textColorType: SBUTextColorType.text02,
-                              ),
-                            ),
-                            SBUIconButtonComponent(
-                              iconButtonSize: 14,
-                              icon: SBUIconComponent(
-                                iconSize: 14,
-                                iconData: SBUIcons.close,
-                                iconColor: isLightTheme
-                                    ? SBUColors.primaryMain
-                                    : SBUColors.primaryLight,
-                              ),
-                            ),
-                          ],
+                      child: Center(
+                        child: SBUTextComponent(
+                          text: strings.channelIsFrozen,
+                          textType: SBUTextType.caption2,
+                          textColorType: SBUTextColorType.information,
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        if (collection != null) {
-                          _checkToMarkAsReadOrUnread(collection, force: true);
-                        }
-                      },
-                      child: Container(
-                        width: 34,
+            if (_showUnreadBadge && unreadMessageCount > 0)
+              Column(
+                children: [
+                  const SizedBox(width: double.maxFinite),
+                  Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      Container(
                         height: 38,
-                        alignment: Alignment.centerRight,
                         margin: EdgeInsets.only(
-                            left: 8, top: isFrozenChannel ? 8 : 64, right: 8),
-                        decoration: const BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
+                          left: 8.w,
+                          top: isFrozenChannel ? 8.h : 64.h,
+                          right: 8.w,
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.only(left: 16.w, right: 12.w),
+                          decoration: BoxDecoration(
+                            color: isLightTheme
+                                ? SBUColors.background50
+                                : SBUColors.background400,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20.r),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.08),
+                                blurRadius: 3,
+                                offset: const Offset(0, 0),
+                              ),
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.12),
+                                blurRadius: 1,
+                                offset: Offset(0, 2.h),
+                              ),
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.04),
+                                blurRadius: 5,
+                                offset: Offset(0, 1.h),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: SBUTextComponent(
+                                  text: strings.unreadMessageCount(
+                                    unreadMessageCount.toString(),
+                                  ),
+                                  textType: SBUTextType.body2,
+                                  textColorType: SBUTextColorType.text02,
+                                ),
+                              ),
+                              SBUIconButtonComponent(
+                                iconButtonSize: 14.r,
+                                icon: SBUIconComponent(
+                                  iconSize: 14.r,
+                                  iconData: SBUIcons.close,
+                                  iconColor: isLightTheme
+                                      ? SBUColors.primaryMain
+                                      : SBUColors.primaryLight,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          if (collection != null) {
+                            _checkToMarkAsReadOrUnread(collection, force: true);
+                          }
+                        },
+                        child: Container(
+                          width: 34.w,
+                          height: 38.h,
+                          alignment: Alignment.centerRight,
+                          margin: EdgeInsets.only(
+                            left: 8.w,
+                            top: isFrozenChannel ? 8.h : 64.h,
+                            right: 8.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20.r),
+                              bottomRight: Radius.circular(20.r),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+          ],
+        ),
+        if (newMessageCount > 0)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Expanded(child: SizedBox(width: double.maxFinite)),
+              Container(
+                height: 38.h,
+                margin: EdgeInsets.only(left: 58.w, bottom: 68.h, right: 58.w),
+                child: GestureDetector(
+                  onTap: () async {
+                    if (collection != null) {
+                      await _scrollToBottom(collection);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    decoration: BoxDecoration(
+                      color: isLightTheme
+                          ? SBUColors.background50
+                          : SBUColors.background400,
+                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 3,
+                          offset: const Offset(0, 0),
+                        ),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.12),
+                          blurRadius: 1,
+                          offset: Offset(0, 2.h),
+                        ),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 5,
+                          offset: Offset(0, 1.h),
+                        ),
+                      ],
                     ),
-                  ],
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: SBUTextComponent(
+                            text: strings.newMessageCount(
+                              newMessageCount.toString(),
+                            ),
+                            textType: SBUTextType.body2,
+                            textColorType: SBUTextColorType.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-        ],
-      ),
-      if (newMessageCount > 0)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Expanded(child: SizedBox(width: double.maxFinite)),
-            Container(
-              height: 38,
-              margin: const EdgeInsets.only(left: 58, bottom: 68, right: 58),
-              child: GestureDetector(
-                onTap: () async {
-                  if (collection != null) {
-                    await _scrollToBottom(collection);
-                  }
-                },
+              ),
+            ],
+          ),
+        if (_showMoveToBottomButton)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Expanded(child: SizedBox(width: double.maxFinite)),
+              Container(
+                width: 38.r,
+                height: 38.r,
+                margin: EdgeInsets.only(left: 8.w, bottom: 68.h, right: 12.w),
                 child: Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                   decoration: BoxDecoration(
                     color: isLightTheme
                         ? SBUColors.background50
                         : SBUColors.background400,
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderRadius: BorderRadius.all(Radius.circular(19.r)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.08),
@@ -759,88 +831,36 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                       BoxShadow(
                         color: Colors.black.withOpacity(0.12),
                         blurRadius: 1,
-                        offset: const Offset(0, 2),
+                        offset: Offset(0, 2.h),
                       ),
                       BoxShadow(
                         color: Colors.black.withOpacity(0.04),
                         blurRadius: 5,
-                        offset: const Offset(0, 1),
+                        offset: Offset(0, 1.h),
                       ),
                     ],
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: SBUTextComponent(
-                          text: strings
-                              .newMessageCount(newMessageCount.toString()),
-                          textType: SBUTextType.body2,
-                          textColorType: SBUTextColorType.primary,
-                        ),
-                      ),
-                    ],
+                  child: SBUIconButtonComponent(
+                    iconButtonSize: 22.r,
+                    icon: SBUIconComponent(
+                      iconSize: 22.r,
+                      iconData: SBUIcons.chevronDown,
+                      iconColor: isLightTheme
+                          ? SBUColors.primaryMain
+                          : SBUColors.primaryLight,
+                    ),
+                    onButtonClicked: () async {
+                      if (collection != null) {
+                        await _scrollToBottom(collection);
+                      }
+                    },
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      if (_showMoveToBottomButton)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            const Expanded(child: SizedBox(width: double.maxFinite)),
-            Container(
-              width: 38,
-              height: 38,
-              margin: const EdgeInsets.only(left: 8, bottom: 68, right: 12),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: isLightTheme
-                      ? SBUColors.background50
-                      : SBUColors.background400,
-                  borderRadius: const BorderRadius.all(Radius.circular(19)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 3,
-                      offset: const Offset(0, 0),
-                    ),
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.12),
-                      blurRadius: 1,
-                      offset: const Offset(0, 2),
-                    ),
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 5,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
-                ),
-                child: SBUIconButtonComponent(
-                  iconButtonSize: 22,
-                  icon: SBUIconComponent(
-                    iconSize: 22,
-                    iconData: SBUIcons.chevronDown,
-                    iconColor: isLightTheme
-                        ? SBUColors.primaryMain
-                        : SBUColors.primaryLight,
-                  ),
-                  onButtonClicked: () async {
-                    if (collection != null) {
-                      await _scrollToBottom(collection);
-                    }
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-    ]);
+            ],
+          ),
+      ],
+    );
   }
 
   Future<void> _scrollToBottom(MessageCollection collection) async {
@@ -877,8 +897,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
 
     if (_showMoveToBottomButton) {
       if (isBottomOfScreen) {
-        SBUMessageCollectionProvider()
-            .checkToMarkAsRead(collection.channel); // Check
+        SBUMessageCollectionProvider().checkToMarkAsRead(
+          collection.channel,
+        ); // Check
 
         if (mounted) {
           setState(() {
@@ -928,16 +949,20 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
       _checkToMarkAsReadOrUnread(collection);
     }
 
-    final showUnreadBadge = (_isNewLineExistsInChannel(collection) &&
+    final showUnreadBadge =
+        (_isNewLineExistsInChannel(collection) &&
         isNewLineVisible == false &&
         collection.channel.unreadMessageCount > 0 &&
         (_canShowUnreadBadge ||
-            SBUMessageCollectionProvider()
-                .didMarkAsUnread(collection.channel.channelUrl)));
+            SBUMessageCollectionProvider().didMarkAsUnread(
+              collection.channel.channelUrl,
+            )));
 
     if (showUnreadBadge) {
-      SBUMessageCollectionProvider()
-          .setFreezeMyLastRead(collection.channel.channelUrl, true);
+      SBUMessageCollectionProvider().setFreezeMyLastRead(
+        collection.channel.channelUrl,
+        true,
+      );
     } else {
       _canShowUnreadBadge = false; // Check
     }
@@ -956,8 +981,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
     bool force = false,
   }) {
     if (!force) {
-      final didMarkAsUnread = SBUMessageCollectionProvider()
-          .didMarkAsUnread(collection.channel.channelUrl);
+      final didMarkAsUnread = SBUMessageCollectionProvider().didMarkAsUnread(
+        collection.channel.channelUrl,
+      );
       final hasSeenNewMessageLine = SBUMessageCollectionProvider()
           .hasSeenNewMessageLine(collection.channel.channelUrl);
       if (didMarkAsUnread || hasSeenNewMessageLine) {
@@ -965,11 +991,13 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
       }
     }
 
-    final isBottom = SBUMessageCollectionProvider()
-        .isBottomOfScreen(collection.channel.channelUrl);
+    final isBottom = SBUMessageCollectionProvider().isBottomOfScreen(
+      collection.channel.channelUrl,
+    );
     if (!force && !isBottom) {
-      final newMessageCount = SBUMessageCollectionProvider()
-          .getNewMessageCount(collection.channel.channelUrl);
+      final newMessageCount = SBUMessageCollectionProvider().getNewMessageCount(
+        collection.channel.channelUrl,
+      );
 
       if (newMessageCount > 0 &&
           newMessageCount <= collection.messageList.length) {
@@ -979,24 +1007,28 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
       }
     }
 
-    SBUMessageCollectionProvider()
-        .setHasSeenNewMessageLine(collection.channel.channelUrl, true); // Check
-    SBUMessageCollectionProvider()
-        .setFreezeMyLastRead(collection.channel.channelUrl, true);
+    SBUMessageCollectionProvider().setHasSeenNewMessageLine(
+      collection.channel.channelUrl,
+      true,
+    ); // Check
+    SBUMessageCollectionProvider().setFreezeMyLastRead(
+      collection.channel.channelUrl,
+      true,
+    );
 
-    runZonedGuarded(() {
-      collection.channel.markAsRead(); // No await
-    }, (error, stack) {
-      // Check
-    });
+    runZonedGuarded(
+      () {
+        collection.channel.markAsRead(); // No await
+      },
+      (error, stack) {
+        // Check
+      },
+    );
   }
 }
 
 class ItemContext {
-  ItemContext({
-    required this.index,
-    required this.context,
-  });
+  ItemContext({required this.index, required this.context});
 
   final int index;
   final BuildContext context;
@@ -1036,7 +1068,8 @@ class ItemContext {
         ? deltaTop + size.height - 20
         : deltaTop + size.height; // Check
 
-    final isVisible = (deltaBottom > (hasNewLine ? -10 : 0.0) &&
+    final isVisible =
+        (deltaBottom > (hasNewLine ? -10 : 0.0) &&
         deltaBottom <= vpHeight); // Check
     return isVisible;
   }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUTextButtonComponent extends SBUStatefulComponent {
   final double? width;
@@ -50,9 +51,9 @@ class SBUTextButtonComponentState extends State<SBUTextButtonComponent> {
       height: height,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: const BorderRadius.all(Radius.circular(4)),
+        borderRadius:  BorderRadius.all(Radius.circular(4.r)),
         border: hasBorder && borderColor != null
-            ? Border.all(width: 1, color: borderColor)
+            ? Border.all(width: 1.r, color: borderColor)
             : null,
       ),
       child: TextButton(

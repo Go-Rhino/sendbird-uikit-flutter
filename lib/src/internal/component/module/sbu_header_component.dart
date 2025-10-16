@@ -11,6 +11,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.d
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_button_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUHeaderComponent extends SBUStatefulComponent {
   final double width;
@@ -75,18 +76,18 @@ class SBUHeaderComponentState extends State<SBUHeaderComponent> {
             child: Material(
               color: Colors.transparent,
               child: Padding(
-                padding: const EdgeInsets.only(right: 12),
+                padding: EdgeInsets.only(right: 12.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (hasBackKey)
                       Padding(
-                        padding: const EdgeInsets.only(left: 12),
+                        padding: EdgeInsets.only(left: 12.w),
                         child: SBUIconButtonComponent(
                           iconButtonSize: 32,
                           icon: SBUIconComponent(
-                            iconSize: 24,
+                            iconSize: 24.r,
                             iconData: SBUIcons.arrowLeft,
                             iconColor: isLightTheme
                                 ? SBUColors.primaryMain
@@ -99,20 +100,20 @@ class SBUHeaderComponentState extends State<SBUHeaderComponent> {
                       ),
                     if (avatar != null)
                       Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: avatar,
                       ),
                     Expanded(
                       child: Padding(
                         padding:
-                            EdgeInsets.only(left: (avatar != null ? 0 : 24)),
+                            EdgeInsets.only(left: (avatar != null ? 0 : 24.w)),
                         child: (typingStatus != null && typingStatus.isNotEmpty)
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   title,
-                                  const SizedBox(height: 2), // Check
+                                  SizedBox(height: 2.h), // Check
                                   SBUTextComponent(
                                     text: typingStatus,
                                     textType: SBUTextType.body3,
@@ -125,12 +126,12 @@ class SBUHeaderComponentState extends State<SBUHeaderComponent> {
                     ),
                     if (textButton != null)
                       Padding(
-                        padding: const EdgeInsets.only(left: 8),
+                        padding: EdgeInsets.only(left: 8.w),
                         child: textButton,
                       ),
                     if (iconButton != null)
                       Padding(
-                        padding: const EdgeInsets.only(left: 8),
+                        padding: EdgeInsets.only(left: 8.w),
                         child: iconButton,
                       ),
                   ],

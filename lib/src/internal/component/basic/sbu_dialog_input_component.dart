@@ -7,6 +7,7 @@ import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.da
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_button_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUDialogInputComponent extends SBUStatefulComponent {
   final String title;
@@ -62,13 +63,13 @@ class SBUDialogInputComponentState extends State<SBUDialogInputComponent> {
       backgroundColor:
           isLightTheme ? SBUColors.background50 : SBUColors.background500,
       child: Padding(
-        padding: const EdgeInsets.only(top: 24, bottom: 12),
+        padding: EdgeInsets.only(top: 24.h, bottom: 12.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+              padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.h),
               child: SBUTextComponent(
                 text: title,
                 textType: SBUTextType.heading1,
@@ -76,8 +77,8 @@ class SBUDialogInputComponentState extends State<SBUDialogInputComponent> {
               ),
             ),
             Container(
-              height: 38,
-              padding: const EdgeInsets.only(left: 24, right: 24),
+              height: 38.h,
+              padding: EdgeInsets.only(left: 24.w, right: 24.w),
               alignment: AlignmentDirectional.centerStart,
               child: TextField(
                 controller: textEditingController,
@@ -98,23 +99,23 @@ class SBUDialogInputComponentState extends State<SBUDialogInputComponent> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24),
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Container(
-                height: 2,
+                height: 2.h,
                 color: isLightTheme
                     ? SBUColors.primaryMain
                     : SBUColors.primaryLight,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 24, right: 12),
+              padding: EdgeInsets.only(top: 24.h, right: 12.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 8),
+                    padding: EdgeInsets.only(left: 8.w),
                     child: SBUTextButtonComponent(
-                      height: 32,
+                      height: 32.h,
                       text: SBUTextComponent(
                         text: strings.cancel,
                         textType: SBUTextType.button,
@@ -124,13 +125,13 @@ class SBUDialogInputComponentState extends State<SBUDialogInputComponent> {
                         Navigator.pop(context);
                         onCancelButtonClicked();
                       },
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.symmetric(horizontal:  8.w, vertical: 8.h,),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 8),
+                    padding: EdgeInsets.only(left: 8.w),
                     child: SBUTextButtonComponent(
-                      height: 32,
+                      height: 32.h,
                       text: SBUTextComponent(
                         text: strings.save,
                         textType: SBUTextType.button,
@@ -141,7 +142,7 @@ class SBUDialogInputComponentState extends State<SBUDialogInputComponent> {
                         Navigator.pop(context);
                         onSaveButtonClicked(enteredText);
                       },
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.symmetric(horizontal:  8.w, vertical: 8.h,),
                     ),
                   ),
                 ],

@@ -13,6 +13,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_image_component.
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
 import 'package:sendbird_uikit/src/internal/utils/sbu_reaction_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUReactionComponent extends SBUStatefulComponent {
   final BaseChannel? channel;
@@ -73,7 +74,7 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
       width: width,
       decoration: BoxDecoration(
         color: isLightTheme ? SBUColors.background50 : SBUColors.background600,
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        borderRadius: BorderRadius.all(Radius.circular(16.r)),
         border: Border.all(
           color:
               isLightTheme ? SBUColors.background100 : SBUColors.background400,
@@ -84,8 +85,8 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
       child: Scrollbar(
         child: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.only(left: 6, top: 6, right: 6, bottom: 6),
-            height: columnCount * 34,
+            margin: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+            height: columnCount * 34.h,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -113,8 +114,8 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
                           }
 
                           return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 2, top: 2, right: 2, bottom: 2),
+                            padding:  EdgeInsets.symmetric(
+                                horizontal: 2.w, vertical: 2.h),
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
@@ -123,10 +124,10 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
                                     await showModalBottomSheet(
                                       context: context,
                                       isScrollControlled: true,
-                                      shape: const RoundedRectangleBorder(
+                                      shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(8),
-                                          topRight: Radius.circular(8),
+                                          topLeft: Radius.circular(8.r),
+                                          topRight: Radius.circular(8.r),
                                         ),
                                       ),
                                       builder: (context) {
@@ -146,10 +147,10 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
                                     await showModalBottomSheet(
                                       context: context,
                                       isScrollControlled: true,
-                                      shape: const RoundedRectangleBorder(
+                                      shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(8),
-                                          topRight: Radius.circular(8),
+                                          topLeft: Radius.circular(8.r),
+                                          topRight: Radius.circular(8.r),
                                         ),
                                       ),
                                       builder: (context) {
@@ -166,15 +167,15 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
                                     ? Container(
                                         decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadius.circular(15),
+                                                BorderRadius.circular(15.r),
                                             color: isLightTheme
                                                 ? SBUColors.background100
                                                 : SBUColors.background400),
                                         child: SizedBox(
-                                          width: 53,
-                                          height: 30,
+                                          width: 53.w,
+                                          height: 30.h,
                                           child: SBUIconComponent(
-                                            iconSize: 20,
+                                            iconSize: 20.r,
                                             iconData: SBUIcons.emoji,
                                             iconColor: isLightTheme
                                                 ? SBUColors
@@ -190,7 +191,7 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
                                                     .contains(currentUserId))
                                             ? BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
+                                                    BorderRadius.circular(15.r),
                                                 color: isLightTheme
                                                     ? SBUColors
                                                         .primaryExtraLight
@@ -198,22 +199,19 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
                                                         .primaryExtraDark)
                                             : BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
+                                                    BorderRadius.circular(15.r),
                                                 color: isLightTheme
                                                     ? SBUColors.background100
                                                     : SBUColors.background400),
-                                        padding: const EdgeInsets.only(
-                                            left: 8,
-                                            top: 5,
-                                            right: 8,
-                                            bottom: 5),
-                                        height: 30,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.w, vertical: 5.h),
+                                        height: 30.h,
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             SizedBox(
-                                              width: 20,
-                                              height: 20,
+                                              width: 20.r,
+                                              height: 20.r,
                                               child: emojiUrl != null
                                                   ? SBUImageComponent(
                                                       imageUrl: emojiUrl,
@@ -221,10 +219,10 @@ class SBUReactionComponentState extends State<SBUReactionComponent> {
                                                     )
                                                   : Container(), // Check
                                             ),
-                                            const SizedBox(width: 4),
+                                             SizedBox(width: 4.w),
                                             Container(
-                                              width: 13,
-                                              height: 12,
+                                              width: 13.w,
+                                              height: 12.h,
                                               alignment: Alignment.center,
                                               child: SBUTextComponent(
                                                 // '99+'(?)

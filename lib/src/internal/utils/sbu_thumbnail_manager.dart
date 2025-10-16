@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
@@ -16,6 +17,7 @@ import 'package:sendbird_uikit/src/internal/utils/sbu_thumbnail_cache.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_colors.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_icons.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUThumbnailManager {
   SBUThumbnailManager._();
@@ -63,7 +65,7 @@ class SBUThumbnailManager {
     final isGif = _isGif(message);
 
     if (fileType == SBUFileType.image) {
-      Widget? thumbnailWidget = _getThumbnail(message, fileType);
+      Widget? thumbnailWidget = _getThumbnail(message, fileType, isLightTheme);
       final size = isParentMessage ? 31.2 : 48.0;
       final iconSize = isParentMessage ? 18.2 : 28.0;
 
@@ -133,7 +135,7 @@ class SBUThumbnailManager {
         return null;
       }
 
-      final widget = _getThumbnail(message, fileType);
+      final widget = _getThumbnail(message, fileType, isLightTheme);
       if (widget != null) {
         return widget;
       }
@@ -191,7 +193,11 @@ class SBUThumbnailManager {
     );
   }
 
-  Widget? _getThumbnail(FileMessage message, SBUFileType fileType) {
+  Widget? _getThumbnail(
+    FileMessage message,
+    SBUFileType fileType,
+    bool isLightTheme,
+  ) {
     SBUThumbnailCache? cache = SBUPreferences().getThumbnailCache(message);
 
     if (cache == null && fileType == SBUFileType.image) {
@@ -211,7 +217,41 @@ class SBUThumbnailManager {
             useCache: true,
           );
         } else {
-          return Image.file(File(cache.path), fit: BoxFit.cover);
+          return Image.file(
+            File(cache.path),
+            fit: BoxFit.cover,
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded || frame != null) {
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    child,
+                  ],
+                );
+              }
+
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 150),
+                child: ColoredBox(
+                  color: isLightTheme
+                      ? SBUColors.background100
+                      : SBUColors.background400,
+                  child: Center(
+                    child: SizedBox(
+                      width: 16.r,
+                      height: 16.r,
+                      child: CircularProgressIndicator(
+                        color: isLightTheme
+                            ? SBUColors.primaryMain
+                            : SBUColors.primaryLight,
+                        strokeWidth: 1.4.r,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
         }
       } catch (_) {
         // Check

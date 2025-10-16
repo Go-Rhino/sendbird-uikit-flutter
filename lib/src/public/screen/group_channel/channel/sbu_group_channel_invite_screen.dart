@@ -16,6 +16,7 @@ import 'package:sendbird_uikit/src/internal/component/module/sbu_header_componen
 import 'package:sendbird_uikit/src/internal/component/module/sbu_selectable_user_list_item_component.dart';
 import 'package:sendbird_uikit/src/internal/provider/sbu_message_collection_provider.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// SBUGroupChannelInviteScreen
 class SBUGroupChannelInviteScreen extends SBUStatefulComponent {
@@ -103,7 +104,7 @@ class SBUGroupChannelInviteScreenState
 
     final header = SBUHeaderComponent(
       width: double.maxFinite,
-      height: 56,
+      height: 56.h,
       backgroundColor:
           isLightTheme ? SBUColors.background50 : SBUColors.background500,
       title: SBUTextComponent(
@@ -113,7 +114,7 @@ class SBUGroupChannelInviteScreenState
       ),
       hasBackKey: true,
       textButton: SBUTextButtonComponent(
-        height: 32,
+        height: 32.h,
         text: SBUTextComponent(
           text:
               '${strings.invite}${selectedUserIdList.isNotEmpty ? ' (${selectedUserIdList.length})' : ''}',
@@ -128,7 +129,7 @@ class SBUGroupChannelInviteScreenState
                 await channel?.invite(selectedUserIdList);
               }
             : null,
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
       ),
     );
 
@@ -151,7 +152,7 @@ class SBUGroupChannelInviteScreenState
           itemBuilder: (context, i) {
             return SBUSelectableUserListItemComponent(
               width: double.maxFinite,
-              height: 56,
+              height: 56.h,
               backgroundColor: isLightTheme
                   ? SBUColors.background50
                   : SBUColors.background600,

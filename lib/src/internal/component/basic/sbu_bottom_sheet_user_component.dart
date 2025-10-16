@@ -8,6 +8,7 @@ import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.da
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_button_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUBottomSheetUserComponent extends SBUStatefulComponent {
   final User user;
@@ -36,24 +37,24 @@ class SBUBottomSheetUserComponentState
     return Container(
       decoration: BoxDecoration(
         color: isLightTheme ? SBUColors.background50 : SBUColors.background500,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.r),
+          topRight: Radius.circular(8.r),
         ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 32),
+            padding: EdgeInsets.only(top: 32.h),
             child: widget.getAvatarComponent(
               isLightTheme: isLightTheme,
-              size: 80,
+              size: 80.r,
               user: user,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 8.h),
             child: SBUTextComponent(
               text: widget.getNickname(user, strings),
               textType: SBUTextType.heading1,
@@ -62,12 +63,12 @@ class SBUBottomSheetUserComponentState
           ),
           if (on1On1ChannelCreated != null)
             Padding(
-              padding: const EdgeInsets.only(left: 24, top: 24, right: 24),
+              padding: EdgeInsets.only(left: 24.w, top: 24.h, right: 24.w),
               child: Material(
                 color: Colors.transparent,
                 child: SBUTextButtonComponent(
                   width: double.maxFinite,
-                  height: 48,
+                  height: 48.h,
                   text: SBUTextComponent(
                     text: strings.message,
                     textType: SBUTextType.button,
@@ -86,7 +87,7 @@ class SBUBottomSheetUserComponentState
                       on1On1ChannelCreated(channel);
                     });
                   },
-                  padding: const EdgeInsets.all(8),
+                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
                   hasBorder: true,
                   borderColor: isLightTheme
                       ? SBUColors.lightThemeTextHighEmphasis
@@ -95,7 +96,7 @@ class SBUBottomSheetUserComponentState
               ),
             ),
           Padding(
-            padding: const EdgeInsets.only(left: 16, top: 24, right: 16),
+            padding: EdgeInsets.only(left: 16.w, top: 24.h, right: 16.w,),
             child: Container(
               height: 1,
               color: SBUColors.lightThemeTextDisabled,
@@ -104,7 +105,7 @@ class SBUBottomSheetUserComponentState
           SizedBox(
             width: double.maxFinite,
             child: Padding(
-              padding: const EdgeInsets.only(left: 16, top: 24, right: 16),
+              padding: EdgeInsets.only(left: 16.w, top: 24.h, right: 16.w,),
               child: SBUTextComponent(
                 text: strings.userId,
                 textType: SBUTextType.body2,
@@ -115,8 +116,8 @@ class SBUBottomSheetUserComponentState
           SizedBox(
             width: double.maxFinite,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 16, top: 4, right: 16, bottom: 24),
+              padding:  EdgeInsets.only(
+                  left: 16.w, top: 4.h, right: 16.w, bottom: 24.h,),
               child: SBUTextComponent(
                 text: user.userId,
                 textType: SBUTextType.body3,

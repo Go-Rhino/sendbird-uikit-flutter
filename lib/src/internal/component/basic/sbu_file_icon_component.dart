@@ -3,6 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUFileIconComponent extends SBUStatelessComponent {
   final double size;
@@ -27,7 +28,7 @@ class SBUFileIconComponent extends SBUStatelessComponent {
       height: size,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         color: backgroundColor,
       ),
       child: Padding(

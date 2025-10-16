@@ -1415,7 +1415,7 @@ class SBUMessageListItemComponentState
           ),
         if (message.sendingStatus == SendingStatus.failed)
           Padding(
-            padding: EdgeInsets.only(right: 4.r, bottom: 2.r),
+            padding: EdgeInsets.only(right: 4.w, bottom: 2.h),
             child: SBUIconComponent(
               iconSize: 16.r,
               iconData: SBUIcons.error,

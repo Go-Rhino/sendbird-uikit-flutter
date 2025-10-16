@@ -17,6 +17,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.d
 import 'package:sendbird_uikit/src/internal/component/module/sbu_header_component.dart';
 import 'package:sendbird_uikit/src/internal/provider/sbu_message_collection_provider.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// SBUGroupChannelInformationScreen
 class SBUGroupChannelInformationScreen extends SBUStatefulComponent {
@@ -58,7 +59,7 @@ class SBUGroupChannelInformationScreenState
 
     final header = SBUHeaderComponent(
       width: double.maxFinite,
-      height: 56,
+      height: 56.h,
       backgroundColor:
           isLightTheme ? SBUColors.background50 : SBUColors.background500,
       title: SBUTextComponent(
@@ -68,7 +69,7 @@ class SBUGroupChannelInformationScreenState
       ),
       hasBackKey: true,
       textButton: SBUTextButtonComponent(
-        height: 32,
+        height: 32.h,
         text: SBUTextComponent(
           text: strings.edit,
           textType: SBUTextType.button,
@@ -78,10 +79,10 @@ class SBUGroupChannelInformationScreenState
           await showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
+                topLeft: Radius.circular(8.r),
+                topRight: Radius.circular(8.r),
               ),
             ),
             builder: (context) {
@@ -148,7 +149,7 @@ class SBUGroupChannelInformationScreenState
             },
           );
         },
-        padding: const EdgeInsets.all(8),
+        padding:  EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
       ),
     );
 
@@ -194,16 +195,16 @@ class SBUGroupChannelInformationScreenState
                     ? Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 24, bottom: 12),
+                            padding: EdgeInsets.only(top: 24.h, bottom: 12.h),
                             child: widget.getGroupChannelAvatarComponent(
                               isLightTheme: isLightTheme,
-                              size: 80,
+                              size: 80.h,
                               channel: channel,
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 23),
+                            padding: EdgeInsets.only(
+                                left: 16.w, right: 16.w, bottom: 23.h),
                             child: SBUTextComponent(
                               text:
                                   widget.getGroupChannelName(channel, strings),
@@ -224,15 +225,15 @@ class SBUGroupChannelInformationScreenState
                                   }
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 15),
+                                  padding: EdgeInsets.only(
+                                      left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                   child: Row(
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 16),
+                                            EdgeInsets.only(right: 16.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.moderations,
                                           iconColor: isLightTheme
                                               ? SBUColors.primaryMain
@@ -248,9 +249,9 @@ class SBUGroupChannelInformationScreenState
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding: EdgeInsets.only(left: 8.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.chevronRight,
                                           iconColor: isLightTheme
                                               ? SBUColors
@@ -276,15 +277,15 @@ class SBUGroupChannelInformationScreenState
                                       .onChanged!(!notificationsSwitch.value);
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 15),
+                                  padding: EdgeInsets.only(
+                                      left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                   child: Row(
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 16),
+                                            EdgeInsets.only(right: 16.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.notifications,
                                           iconColor: isLightTheme
                                               ? SBUColors.primaryMain
@@ -300,9 +301,9 @@ class SBUGroupChannelInformationScreenState
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding: EdgeInsets.only(left: 8.w),
                                         child: SizedBox(
-                                          height: 24,
+                                          height: 24.h,
                                           child: notificationsSwitch,
                                         ),
                                       ),
@@ -322,15 +323,15 @@ class SBUGroupChannelInformationScreenState
                                   }
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 15),
+                                  padding:  EdgeInsets.only(
+                                      left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                   child: Row(
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 16),
+                                            EdgeInsets.only(right: 16.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.members,
                                           iconColor: isLightTheme
                                               ? SBUColors.primaryMain
@@ -346,7 +347,7 @@ class SBUGroupChannelInformationScreenState
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding: EdgeInsets.only(left: 8.w),
                                         child: SBUTextComponent(
                                           text:
                                               channel.members.length.toString(),
@@ -356,9 +357,9 @@ class SBUGroupChannelInformationScreenState
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 4),
+                                        padding: EdgeInsets.only(left: 4.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.chevronRight,
                                           iconColor: isLightTheme
                                               ? SBUColors
@@ -389,14 +390,14 @@ class SBUGroupChannelInformationScreenState
                                 });
                               },
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16, top: 16, right: 16, bottom: 15),
+                                padding:   EdgeInsets.only(
+                                    left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                 child: Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 16),
+                                      padding: EdgeInsets.only(right: 16.w),
                                       child: SBUIconComponent(
-                                        iconSize: 24,
+                                        iconSize: 24.r,
                                         iconData: SBUIcons.leave,
                                         iconColor: isLightTheme
                                             ? SBUColors.errorMain
@@ -429,7 +430,7 @@ class SBUGroupChannelInformationScreenState
 
   Widget _line(bool isLightTheme) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Container(
         height: 1,
         color: isLightTheme

@@ -12,6 +12,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.d
 import 'package:sendbird_uikit/src/internal/component/module/sbu_header_component.dart';
 import 'package:sendbird_uikit/src/internal/provider/sbu_message_collection_provider.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// SBUGroupChannelModerationsScreen
 class SBUGroupChannelModerationsScreen extends SBUStatefulComponent {
@@ -49,7 +50,7 @@ class SBUGroupChannelModerationsScreenState
 
     final header = SBUHeaderComponent(
       width: double.maxFinite,
-      height: 56,
+      height: 56.h,
       backgroundColor:
           isLightTheme ? SBUColors.background50 : SBUColors.background500,
       title: SBUTextComponent(
@@ -112,13 +113,13 @@ class SBUGroupChannelModerationsScreenState
                                   }
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 15),
+                                  padding:  EdgeInsets.only(
+                                      left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                   child: Row(
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 16),
+                                            EdgeInsets.only(right: 16.w),
                                         child: SBUIconComponent(
                                           iconSize: 24,
                                           iconData: SBUIcons.operator,
@@ -136,9 +137,9 @@ class SBUGroupChannelModerationsScreenState
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding:  EdgeInsets.only(left: 8.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.chevronRight,
                                           iconColor: isLightTheme
                                               ? SBUColors
@@ -166,15 +167,15 @@ class SBUGroupChannelModerationsScreenState
                                   }
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 15),
+                                  padding: EdgeInsets.only(
+                                      left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                   child: Row(
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 16),
+                                            EdgeInsets.only(right: 16.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.mute,
                                           iconColor: isLightTheme
                                               ? SBUColors.primaryMain
@@ -190,9 +191,9 @@ class SBUGroupChannelModerationsScreenState
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding: EdgeInsets.only(left: 8.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.chevronRight,
                                           iconColor: isLightTheme
                                               ? SBUColors
@@ -219,15 +220,15 @@ class SBUGroupChannelModerationsScreenState
                                   }
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 15),
+                                  padding:  EdgeInsets.only(
+                                      left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                   child: Row(
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 16),
+                                            EdgeInsets.only(right: 16.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.ban,
                                           iconColor: isLightTheme
                                               ? SBUColors.primaryMain
@@ -243,9 +244,9 @@ class SBUGroupChannelModerationsScreenState
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding: EdgeInsets.only(left: 8.w),
                                         child: SBUIconComponent(
-                                          iconSize: 24,
+                                          iconSize: 24.r,
                                           iconData: SBUIcons.chevronRight,
                                           iconColor: isLightTheme
                                               ? SBUColors
@@ -269,14 +270,14 @@ class SBUGroupChannelModerationsScreenState
                                     .onChanged!(!freezeChannelSwitch.value);
                               },
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16, top: 16, right: 16, bottom: 15),
+                                padding:   EdgeInsets.only(
+                                    left: 16.w, top: 16.h, right: 16.w, bottom: 15.h),
                                 child: Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 16),
+                                      padding: EdgeInsets.only(right: 16.w),
                                       child: SBUIconComponent(
-                                        iconSize: 24,
+                                        iconSize: 24.r,
                                         iconData: SBUIcons.freeze,
                                         iconColor: isLightTheme
                                             ? SBUColors.primaryMain
@@ -291,9 +292,9 @@ class SBUGroupChannelModerationsScreenState
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 8),
+                                      padding: EdgeInsets.only(left: 8.w),
                                       child: SizedBox(
-                                        height: 24,
+                                        height: 24.r,
                                         child: freezeChannelSwitch,
                                       ),
                                     ),
@@ -316,9 +317,9 @@ class SBUGroupChannelModerationsScreenState
 
   Widget _line(bool isLightTheme) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Container(
-        height: 1,
+        height: 1.h,
         color: isLightTheme
             ? SBUColors.lightThemeTextDisabled
             : SBUColors.darkThemeTextDisabled,

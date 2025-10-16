@@ -8,6 +8,7 @@ import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.da
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUSelectableUserListItemComponent extends SBUStatefulComponent {
   final double width;
@@ -67,10 +68,10 @@ class SBUUserListItemComponentState
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 child: widget.getAvatarComponent(
                   isLightTheme: isLightTheme,
-                  size: 36,
+                  size: 36.r,
                   user: user,
                 ),
               ),
@@ -80,12 +81,12 @@ class SBUUserListItemComponentState
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 12),
+                        padding: EdgeInsets.only(right: 12.w),
                         child: Row(
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 4),
+                                padding: EdgeInsets.only(right: 4.w),
                                 child: SBUTextComponent(
                                   text: widget.getNickname(user, strings),
                                   textType: SBUTextType.subtitle2,
@@ -95,9 +96,9 @@ class SBUUserListItemComponentState
                             ),
                             _isChecked
                                 ? Padding(
-                                    padding: const EdgeInsets.all(8),
+                                    padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 8.h),
                                     child: SBUIconComponent(
-                                      iconSize: 24,
+                                      iconSize: 24.r,
                                       iconData: SBUIcons.checkboxOn,
                                       iconColor: isLightTheme
                                           ? SBUColors.primaryMain
@@ -105,9 +106,9 @@ class SBUUserListItemComponentState
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.all(8),
+                                    padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 8.h),
                                     child: SBUIconComponent(
-                                      iconSize: 24,
+                                      iconSize: 24.r,
                                       iconData: SBUIcons.checkboxOff,
                                       iconColor: isLightTheme
                                           ? SBUColors.lightThemeTextLowEmphasis

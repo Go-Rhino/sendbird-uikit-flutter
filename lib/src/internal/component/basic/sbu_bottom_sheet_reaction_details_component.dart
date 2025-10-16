@@ -12,6 +12,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_scroll_bar_compo
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
 import 'package:sendbird_uikit/src/internal/utils/sbu_reaction_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUBottomSheetReactionDetailsComponent extends SBUStatefulComponent {
   final BaseChannel? channel;
@@ -99,16 +100,16 @@ class SBUBottomSheetReactionDetailsComponentState
     return Container(
       decoration: BoxDecoration(
         color: isLightTheme ? SBUColors.background50 : SBUColors.background500,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.r),
+          topRight: Radius.circular(8.r),
         ),
       ),
       child: Container(
         height: (isExtendedList
-            ? MediaQuery.of(context).size.height - 48
-            : 276), // Check
-        padding: const EdgeInsets.only(top: 16),
+            ? MediaQuery.of(context).size.height - 48.h
+            : 276.h), // Check
+        padding: EdgeInsets.only(top: 16.h),
         child: DefaultTabController(
           length: tabCount,
           child: Column(
@@ -124,7 +125,7 @@ class SBUBottomSheetReactionDetailsComponentState
                         : SBUColors.darkThemeTextDisabled,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: TabBar(
                       controller: tabController,
                       isScrollable: true,
@@ -135,7 +136,7 @@ class SBUBottomSheetReactionDetailsComponentState
                           ? SBUColors.primaryMain
                           : SBUColors.primaryLight,
                       indicatorPadding:
-                          const EdgeInsets.symmetric(horizontal: 8),
+                          EdgeInsets.symmetric(horizontal: 8.w),
                       indicatorSize: TabBarIndicatorSize.label,
                       tabAlignment: TabAlignment.start,
                       tabs: List<Widget>.generate(
@@ -152,8 +153,8 @@ class SBUBottomSheetReactionDetailsComponentState
                           return Tab(
                             height: 41,
                             child: Container(
-                              margin: const EdgeInsets.only(
-                                  left: 8, right: 8, bottom: 13),
+                              margin: EdgeInsets.only(
+                                  left: 8.w, right: 8.w, bottom: 13.h,),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -165,7 +166,7 @@ class SBUBottomSheetReactionDetailsComponentState
                                       cacheKey: reaction.key,
                                     ),
                                   ),
-                                  const SizedBox(width: 4),
+                                   SizedBox(width: 4.w),
                                   SBUTextComponent(
                                     text:
                                         '${reaction.userIds.length > 99 ? '99+' : reaction.userIds.length}',
@@ -206,7 +207,7 @@ class SBUBottomSheetReactionDetailsComponentState
                               if (member != null) {
                                 return SBUReactionMemberListItemComponent(
                                   width: double.maxFinite,
-                                  height: 48,
+                                  height: 48.h,
                                   backgroundColor: isLightTheme
                                       ? SBUColors.background50
                                       : SBUColors.background500,

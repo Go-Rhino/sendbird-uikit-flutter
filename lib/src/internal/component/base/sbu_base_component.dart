@@ -10,6 +10,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_avatar_component
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 abstract class SBUStatefulComponent extends StatefulWidget
     with SBUBaseComponent {
@@ -370,18 +371,18 @@ mixin SBUBaseComponent {
         toastDuration: const Duration(seconds: 4), // Check
         child: Container(
           padding:
-              const EdgeInsets.only(left: 12, top: 12, right: 16, bottom: 12),
+               EdgeInsets.only(left: 12.w, top: 12.h, right: 16.w, bottom: 12.h),
           decoration: BoxDecoration(
             color: isLightTheme
                 ? SBUColors.background600
                 : SBUColors.background300,
-            borderRadius: const BorderRadius.all(Radius.circular(24)),
+            borderRadius: BorderRadius.all(Radius.circular(24.r)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               SBUIconComponent(
-                iconSize: 24,
+                iconSize: 24.r,
                 iconData: isError ? SBUIcons.error : SBUIcons.done,
                 iconColor: isLightTheme
                     ? (isError
@@ -389,7 +390,7 @@ mixin SBUBaseComponent {
                         : SBUColors.secondaryLight)
                     : (isError ? SBUColors.errorMain : SBUColors.secondaryMain),
               ),
-              const SizedBox(width: 8),
+               SizedBox(width: 8.w),
               SBUTextComponent(
                 text: text,
                 textType: SBUTextType.body3,
@@ -403,7 +404,7 @@ mixin SBUBaseComponent {
   }
 
   Size getThumbnailSize() {
-    return const Size(600, 600); // Check
+    return Size(600.w, 600.h); // Check
   }
 
   bool isReplyMessageToChannel(BaseMessage message) {

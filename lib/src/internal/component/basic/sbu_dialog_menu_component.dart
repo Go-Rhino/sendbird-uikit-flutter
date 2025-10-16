@@ -8,6 +8,7 @@ import 'package:sendbird_uikit/src/internal/component/base/sbu_base_component.da
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_button_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUDialogMenuComponent extends SBUStatefulComponent {
   final String title;
@@ -46,18 +47,18 @@ class SBUDialogMenuComponentState extends State<SBUDialogMenuComponent> {
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(4.r),
       ),
       backgroundColor:
           isLightTheme ? SBUColors.background50 : SBUColors.background500,
       child: Padding(
-        padding: const EdgeInsets.only(top: 20, bottom: 8),
+        padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+              padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.h),
               child: SBUTextComponent(
                 text: title,
                 textType: SBUTextType.heading1,
@@ -68,15 +69,15 @@ class SBUDialogMenuComponentState extends State<SBUDialogMenuComponent> {
                 ? SizedBox(
                     width: double.maxFinite,
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 4),
+                      padding: EdgeInsets.only(right: 4.w),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: buttonNames.mapIndexed((index, name) {
                           return Padding(
-                            padding: const EdgeInsets.only(right: 8),
+                            padding: EdgeInsets.only(right: 8.w),
                             child: SBUTextButtonComponent(
-                              height: 32,
+                              height: 32.h,
                               text: SBUTextComponent(
                                 text: name,
                                 textType: SBUTextType.button,
@@ -88,7 +89,7 @@ class SBUDialogMenuComponentState extends State<SBUDialogMenuComponent> {
                                 Navigator.pop(context);
                                 onButtonClicked(buttonNames[index]);
                               },
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h,),
                             ),
                           );
                         }).toList(),
@@ -101,7 +102,7 @@ class SBUDialogMenuComponentState extends State<SBUDialogMenuComponent> {
                     children: buttonNames.mapIndexed((index, name) {
                       return SBUTextButtonComponent(
                         width: double.maxFinite,
-                        height: 48,
+                        height: 48.h,
                         text: SBUTextComponent(
                           text: name,
                           textType: SBUTextType.subtitle2,
@@ -113,7 +114,7 @@ class SBUDialogMenuComponentState extends State<SBUDialogMenuComponent> {
                           Navigator.pop(context);
                           onButtonClicked(buttonNames[index]);
                         },
-                        padding: const EdgeInsets.only(left: 24, right: 24),
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
                         isAlignmentStart: true,
                       );
                     }).toList(),

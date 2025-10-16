@@ -15,6 +15,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.d
 import 'package:sendbird_uikit/src/internal/component/module/sbu_header_component.dart';
 import 'package:sendbird_uikit/src/internal/component/module/sbu_selectable_user_list_item_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// SBUGroupChannelCreateScreen
 class SBUGroupChannelCreateScreen extends SBUStatefulComponent {
@@ -89,7 +90,7 @@ class SBUGroupChannelCreateScreenState
 
     final header = SBUHeaderComponent(
       width: double.maxFinite,
-      height: 56,
+      height: 56.h,
       backgroundColor:
           isLightTheme ? SBUColors.background50 : SBUColors.background500,
       title: SBUTextComponent(
@@ -99,7 +100,7 @@ class SBUGroupChannelCreateScreenState
       ),
       hasBackKey: true,
       textButton: SBUTextButtonComponent(
-        height: 32,
+        height: 32.h,
         text: SBUTextComponent(
           text:
               '${strings.create}${selectedUserIdList.isNotEmpty ? ' (${selectedUserIdList.length})' : ''}',
@@ -126,7 +127,7 @@ class SBUGroupChannelCreateScreenState
                 }
               }
             : null,
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
       ),
     );
 
@@ -147,7 +148,7 @@ class SBUGroupChannelCreateScreenState
           itemBuilder: (context, i) {
             return SBUSelectableUserListItemComponent(
               width: double.maxFinite,
-              height: 56,
+              height: 56.h,
               backgroundColor: isLightTheme
                   ? SBUColors.background50
                   : SBUColors.background600,

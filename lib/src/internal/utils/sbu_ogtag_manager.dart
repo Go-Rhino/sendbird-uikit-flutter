@@ -8,6 +8,7 @@ import 'package:sendbird_uikit/src/internal/component/basic/sbu_image_component.
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_reaction_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SBUOGTagManager {
   SBUOGTagManager._();
@@ -40,7 +41,7 @@ class SBUOGTagManager {
     required bool isMyMessage,
   }) {
     if (_isOGTagEnabled(message)) {
-      const double messageItemWidth = 244;
+      final double messageItemWidth = 244.w;
 
       final ogMetaData = message.ogMetaData!;
       final ogImageUrl =
@@ -48,20 +49,20 @@ class SBUOGTagManager {
 
       return Container(
         width: messageItemWidth,
-        padding: const EdgeInsets.only(top: 6),
+        padding: EdgeInsets.only(top: 6.h),
         decoration: BoxDecoration(
           color: isMyMessage
               ? (isLightTheme ? SBUColors.primaryMain : SBUColors.primaryLight)
               : (isLightTheme
                   ? SBUColors.background100
                   : SBUColors.background400),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 6),
+              padding:  EdgeInsets.only(left: 12.w, right: 12.w, bottom: 6.h),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -79,7 +80,7 @@ class SBUOGTagManager {
                   ),
                   if (message.updatedAt > message.createdAt)
                     Padding(
-                      padding: const EdgeInsets.only(left: 4),
+                      padding: EdgeInsets.only(left: 4.w),
                       child: SBUTextComponent(
                         text: strings.edited,
                         textType: SBUTextType.body3,
@@ -96,7 +97,7 @@ class SBUOGTagManager {
             if (ogImageUrl != null && ogImageUrl.isNotEmpty)
               Container(
                 width: messageItemWidth,
-                height: 136,
+                height: 136.h,
                 color: isLightTheme
                     ? SBUColors.background100
                     : SBUColors.background400,
@@ -104,7 +105,7 @@ class SBUOGTagManager {
                   imageUrl: ogImageUrl,
                   cacheKey: ogImageUrl,
                   errorWidget: SBUIconComponent(
-                    iconSize: 48,
+                    iconSize: 48.r,
                     iconData: SBUIcons.thumbnailNone,
                     iconColor: isLightTheme
                         ? SBUColors.lightThemeTextLowEmphasis
@@ -115,7 +116,7 @@ class SBUOGTagManager {
             Container(
               width: messageItemWidth,
               padding:
-                  const EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 4),
+                  EdgeInsets.only(left: 12.w, top: 8.h, right: 12.w, bottom: 4.h),
               color: isLightTheme
                   ? SBUColors.background100
                   : SBUColors.background400,
@@ -129,7 +130,7 @@ class SBUOGTagManager {
             ),
             Container(
               width: messageItemWidth,
-              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
+              padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 8.h),
               color: isLightTheme
                   ? SBUColors.background100
                   : SBUColors.background400,
@@ -143,7 +144,7 @@ class SBUOGTagManager {
             ),
             Container(
               width: messageItemWidth,
-              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+              padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 12.h),
               decoration: BoxDecoration(
                 color: isLightTheme
                     ? SBUColors.background100
@@ -151,9 +152,9 @@ class SBUOGTagManager {
                 borderRadius:
                     message.reactions != null && message.reactions!.isNotEmpty
                         ? BorderRadius.circular(0)
-                        : const BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
+                        :  BorderRadius.only(
+                            bottomLeft: Radius.circular(16.r),
+                            bottomRight: Radius.circular(16.r),
                           ),
               ),
               child: SBUTextComponent(
@@ -169,9 +170,9 @@ class SBUOGTagManager {
                 color: isLightTheme
                     ? SBUColors.background100
                     : SBUColors.background400,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
+                borderRadius:  BorderRadius.only(
+                  bottomLeft: Radius.circular(16.r),
+                  bottomRight: Radius.circular(16.r),
                 ),
               ),
               child: SBUReactionComponent(
