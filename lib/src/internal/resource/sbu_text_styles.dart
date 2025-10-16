@@ -141,10 +141,11 @@ class SBUTextStyles {
       case SBUTextType.caption1:
         return TextStyle(
           fontFamily: fontFamily,
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.normal,
-          height: 1.33,
+          letterSpacing: 0.0,
+          height: 16 / 12,
           color: color,
           decorationThickness: 0,
           leadingDistribution: TextLeadingDistribution.even,
