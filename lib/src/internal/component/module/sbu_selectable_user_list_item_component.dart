@@ -120,8 +120,8 @@ class SBUUserListItemComponentState
                       ),
                     ),
                     Divider(
-                      height: 1,
-                      thickness: 1,
+                      height: 1.h,
+                      thickness: 1.h,
                       color: isLightTheme
                           ? SBUColors.lightThemeTextDisabled
                           : SBUColors.darkThemeTextDisabled,
