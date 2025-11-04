@@ -212,9 +212,8 @@ class SBUMessageListItemComponentState
           Expanded(
             child: Container(
               height: 1.h,
-              color: isLightTheme
-                  ? SBUColors.primaryMain
-                  : SBUColors.primaryLight,
+              color:
+                  isLightTheme ? SBUColors.primaryMain : SBUColors.primaryLight,
             ),
           ),
           SizedBox(width: 4.w),
@@ -227,9 +226,8 @@ class SBUMessageListItemComponentState
           Expanded(
             child: Container(
               height: 1.h,
-              color: isLightTheme
-                  ? SBUColors.primaryMain
-                  : SBUColors.primaryLight,
+              color:
+                  isLightTheme ? SBUColors.primaryMain : SBUColors.primaryLight,
             ),
           ),
         ],
@@ -448,8 +446,8 @@ class SBUMessageListItemComponentState
     final senderId = message.sender?.userId;
     final isMyMessage =
         (senderId != null && senderId == SendbirdChat.currentUser?.userId) ||
-        (senderId == null) ||
-        (message.sendingStatus == SendingStatus.failed);
+            (senderId == null) ||
+            (message.sendingStatus == SendingStatus.failed);
     return isMyMessage;
   }
 
@@ -610,14 +608,12 @@ class SBUMessageListItemComponentState
           padding: EdgeInsets.only(right: 8.w),
           child: SBUFileIconComponent(
             size: 28.r,
-            backgroundColor: isLightTheme
-                ? SBUColors.background50
-                : SBUColors.background600,
+            backgroundColor:
+                isLightTheme ? SBUColors.background50 : SBUColors.background600,
             iconSize: 24.r,
             iconData: SBUIcons.fileDocument,
-            iconColor: isLightTheme
-                ? SBUColors.primaryMain
-                : SBUColors.primaryLight,
+            iconColor:
+                isLightTheme ? SBUColors.primaryMain : SBUColors.primaryLight,
           ),
         ),
         Flexible(
@@ -645,229 +641,196 @@ class SBUMessageListItemComponentState
     required bool isLightTheme,
     required SBUStrings strings,
   }) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.end,
+    final bool showSenderName = !isSameMinuteAtPreviousMessage &&
+        !message.isReplyToChannel &&
+        message.parentMessageId == null;
+
+    return Stack(
       children: [
-        Padding(
-          padding: EdgeInsets.only(right: 12.w, bottom: 2.h),
-          child: (isSameMinuteAtNextMessage == false)
-              ? Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(13.r),
-                    onTap: () async {
-                      final onUserIconClicked = widget.onUserIconClicked;
-                      final sender = message.sender;
-                      if (onUserIconClicked != null) {
-                        if (sender != null) {
-                          onUserIconClicked(sender);
-                          return;
-                        }
-                      }
+        if (showSenderName)
+          Padding(
+            // HACK
+            // padding: aligning with message text start + avatar size
+            padding: EdgeInsets.only(bottom: 4.h, left: 24.w + 26.r),
+            child: SBUTextComponent(
+              text: widget.getNickname(message.sender, strings),
+              textType: SBUTextType.caption1,
+              textColorType: SBUTextColorType.text02,
+            ),
+          ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(right: 12.w, bottom: 2.h),
+              child: (isSameMinuteAtNextMessage == false)
+                  ? Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(13.r),
+                        onTap: () async {
+                          final onUserIconClicked = widget.onUserIconClicked;
+                          final sender = message.sender;
+                          if (onUserIconClicked != null) {
+                            if (sender != null) {
+                              onUserIconClicked(sender);
+                              return;
+                            }
+                          }
 
-                      if (sender != null) {
-                        widget.unfocus();
-                        final themeProvider = context.read<SBUThemeProvider>();
-                        final stringProvider = context
-                            .read<SBUStringProvider>();
+                          if (sender != null) {
+                            widget.unfocus();
+                            final themeProvider =
+                                context.read<SBUThemeProvider>();
+                            final stringProvider =
+                                context.read<SBUStringProvider>();
 
-                        await showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8.r),
-                              topRight: Radius.circular(8.r),
-                            ),
-                          ),
-                          builder: (innerContext) {
-                            return MultiProvider(
-                              providers: [
-                                ChangeNotifierProvider.value(
-                                  value: themeProvider,
+                            await showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8.r),
+                                  topRight: Radius.circular(8.r),
                                 ),
-                                ChangeNotifierProvider.value(
-                                  value: stringProvider,
+                              ),
+                              builder: (innerContext) {
+                                return MultiProvider(
+                                  providers: [
+                                    ChangeNotifierProvider.value(
+                                      value: themeProvider,
+                                    ),
+                                    ChangeNotifierProvider.value(
+                                      value: stringProvider,
+                                    ),
+                                  ],
+                                  child: SBUBottomSheetUserComponent(
+                                    user: sender,
+                                    on1On1ChannelCreated:
+                                        widget.on1On1ChannelCreated,
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
+                        child: widget.getAvatarComponent(
+                          isLightTheme: isLightTheme,
+                          size: 26.r,
+                          user: message.sender,
+                        ),
+                      ),
+                    )
+                  : SizedBox(width: 26.w),
+            ),
+            Flexible(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (showSenderName)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 4.h),
+                      child: SBUTextComponent(
+                        text: '',
+                        textType: SBUTextType.caption1,
+                        textColorType: SBUTextColorType.text02,
+                      ),
+                    ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16.r),
+                      onTap: () async {
+                        if (widget.onListItemClicked != null) {
+                          widget.onListItemClicked!(
+                              collection.channel, message);
+                        }
+                      },
+                      onLongPress: () async {
+                        widget.onListItemClicked
+                            ?.call(collection.channel, message);
+                        return;
+                      },
+                      child: SBUOGTagManager().getOGTagMessageItemWidget(
+                            message: message,
+                            collection: collection,
+                            isLightTheme: isLightTheme,
+                            strings: strings,
+                            isMyMessage: false,
+                          ) ??
+                          Container(
+                            padding: EdgeInsets.only(top: 6.h),
+                            decoration: BoxDecoration(
+                              color: isLightTheme
+                                  ? SBUColors.background100
+                                  : SBUColors.background400,
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 12.w,
+                                    right: 12.w,
+                                    bottom: 6.h,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Flexible(
+                                        child: SBUTextComponent(
+                                          text: message.message,
+                                          textType: SBUTextType.body3,
+                                          textColorType:
+                                              SBUTextColorType.text01,
+                                          textOverflowType: null,
+                                          maxLines: null,
+                                        ),
+                                      ),
+                                      if (message.updatedAt > message.createdAt)
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 4.w),
+                                          child: SBUTextComponent(
+                                            text: strings.edited,
+                                            textType: SBUTextType.body3,
+                                            textColorType:
+                                                SBUTextColorType.text02,
+                                            textOverflowType: null,
+                                            maxLines: null,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                SBUReactionComponent(
+                                  channel: collection.channel,
+                                  message: message,
                                 ),
                               ],
-                              child: SBUBottomSheetUserComponent(
-                                user: sender,
-                                on1On1ChannelCreated:
-                                    widget.on1On1ChannelCreated,
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    },
-                    child: widget.getAvatarComponent(
-                      isLightTheme: isLightTheme,
-                      size: 26.r,
-                      user: message.sender,
+                            ),
+                          ),
                     ),
                   ),
-                )
-              : SizedBox(width: 26.w),
-        ),
-        Flexible(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (isSameMinuteAtPreviousMessage == false)
-                if (message.isReplyToChannel == false &&
-                    message.parentMessageId == null)
-                  Padding(
-                    padding: EdgeInsets.only(left: 12.w, bottom: 4.h),
-                    child: SBUTextComponent(
-                      text: widget.getNickname(message.sender, strings),
-                      textType: SBUTextType.caption1,
-                      textColorType: SBUTextColorType.text02,
-                    ),
-                  ),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(16.r),
-                  onTap: () async {
-                    if (widget.onListItemClicked != null) {
-                      widget.onListItemClicked!(collection.channel, message);
-                    }
-                  },
-                  onLongPress: () async {
-                    widget.onListItemClicked?.call(collection.channel, message);
-                    return;
-                    widget.unfocus();
-                    await showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8.r),
-                          topRight: Radius.circular(8.r),
-                        ),
-                      ),
-                      builder: (context) {
-                        return SBUBottomSheetMenuComponent(
-                          channel: collection.channel,
-                          message: message,
-                          iconNames: [
-                            SBUIcons.copy,
-                            if (SBUMarkAsUnreadManager().isOn())
-                              SBUIcons.markAsUnread,
-                            if (SBUReplyManager().isQuoteReplyAvailable(
-                              collection.channel,
-                            ))
-                              SBUIcons.reply,
-                          ],
-                          buttonNames: [
-                            strings.copy,
-                            if (SBUMarkAsUnreadManager().isOn())
-                              strings.markAsUnread,
-                            if (SBUReplyManager().isQuoteReplyAvailable(
-                              collection.channel,
-                            ))
-                              strings.reply,
-                          ],
-                          onButtonClicked: (buttonName) async {
-                            if (buttonName == strings.copy) {
-                              await widget.copyTextToClipboard(
-                                message.message,
-                                strings,
-                              );
-                            } else if (buttonName == strings.markAsUnread) {
-                              await _markAsUnread(collection.channel, message);
-                            } else if (buttonName == strings.reply) {
-                              SBUMessageCollectionProvider()
-                                  .setReplyingToMessage(
-                                    widget.messageCollectionNo,
-                                    message,
-                                  );
-                            }
-                          },
-                          disabledNames: message.isReplyToChannel
-                              ? [strings.reply]
-                              : null,
-                        );
-                      },
-                    );
-                  },
-                  child:
-                      SBUOGTagManager().getOGTagMessageItemWidget(
-                        message: message,
-                        collection: collection,
-                        isLightTheme: isLightTheme,
-                        strings: strings,
-                        isMyMessage: false,
-                      ) ??
-                      Container(
-                        padding: EdgeInsets.only(top: 6.h),
-                        decoration: BoxDecoration(
-                          color: isLightTheme
-                              ? SBUColors.background100
-                              : SBUColors.background400,
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 12.w,
-                                right: 12.w,
-                                bottom: 6.h,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Flexible(
-                                    child: SBUTextComponent(
-                                      text: message.message,
-                                      textType: SBUTextType.body3,
-                                      textColorType: SBUTextColorType.text01,
-                                      textOverflowType: null,
-                                      maxLines: null,
-                                    ),
-                                  ),
-                                  if (message.updatedAt > message.createdAt)
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 4.w),
-                                      child: SBUTextComponent(
-                                        text: strings.edited,
-                                        textType: SBUTextType.body3,
-                                        textColorType: SBUTextColorType.text02,
-                                        textOverflowType: null,
-                                        maxLines: null,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                            SBUReactionComponent(
-                              channel: collection.channel,
-                              message: message,
-                            ),
-                          ],
-                        ),
-                      ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-        Container(
-          height: 16.h,
-          alignment: AlignmentDirectional.center,
-          padding: EdgeInsets.only(left: 4.w),
-          child: SBUTextComponent(
-            text: timeString,
-            textType: SBUTextType.caption4,
-            textColorType: SBUTextColorType.text03,
-            transparent: isSameMinuteAtNextMessage,
-          ),
+            ),
+            Container(
+              height: 16.h,
+              alignment: AlignmentDirectional.center,
+              padding: EdgeInsets.only(left: 4.w),
+              child: SBUTextComponent(
+                text: timeString,
+                textType: SBUTextType.caption4,
+                textColorType: SBUTextColorType.text03,
+                transparent: isSameMinuteAtNextMessage,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -932,9 +895,8 @@ class SBUMessageListItemComponentState
             child: SBUIconComponent(
               iconSize: 16.r,
               iconData: SBUIcons.error,
-              iconColor: isLightTheme
-                  ? SBUColors.errorMain
-                  : SBUColors.errorLight,
+              iconColor:
+                  isLightTheme ? SBUColors.errorMain : SBUColors.errorLight,
             ),
           ),
         if ((message.sendingStatus?.isTimeAvailable ?? false) &&
@@ -1217,8 +1179,8 @@ class SBUMessageListItemComponentState
                         widget.unfocus();
 
                         final themeProvider = context.read<SBUThemeProvider>();
-                        final stringProvider = context
-                            .read<SBUStringProvider>();
+                        final stringProvider =
+                            context.read<SBUStringProvider>();
 
                         await showModalBottomSheet(
                           context: context,
@@ -1346,14 +1308,13 @@ class SBUMessageListItemComponentState
                             } else if (buttonName == strings.reply) {
                               SBUMessageCollectionProvider()
                                   .setReplyingToMessage(
-                                    widget.messageCollectionNo,
-                                    message,
-                                  );
+                                widget.messageCollectionNo,
+                                message,
+                              );
                             }
                           },
-                          disabledNames: message.isReplyToChannel
-                              ? [strings.reply]
-                              : null,
+                          disabledNames:
+                              message.isReplyToChannel ? [strings.reply] : null,
                         );
                       },
                     );
@@ -1365,11 +1326,11 @@ class SBUMessageListItemComponentState
                     decoration: BoxDecoration(
                       color: thumbnailWidget != null
                           ? isLightTheme
-                                ? SBUColors.background100
-                                : SBUColors.background400
+                              ? SBUColors.background100
+                              : SBUColors.background400
                           : isLightTheme
-                          ? SBUColors.background100
-                          : SBUColors.background400,
+                              ? SBUColors.background100
+                              : SBUColors.background400,
                       borderRadius: BorderRadius.circular(16.r),
                     ),
                     child: thumbnailWidget != null
@@ -1506,9 +1467,8 @@ class SBUMessageListItemComponentState
             child: SBUIconComponent(
               iconSize: 16.r,
               iconData: SBUIcons.error,
-              iconColor: isLightTheme
-                  ? SBUColors.errorMain
-                  : SBUColors.errorLight,
+              iconColor:
+                  isLightTheme ? SBUColors.errorMain : SBUColors.errorLight,
             ),
           ),
         if ((message.sendingStatus?.isTimeAvailable ?? false) &&
@@ -1703,11 +1663,11 @@ class SBUMessageListItemComponentState
                 decoration: BoxDecoration(
                   color: thumbnailWidget != null
                       ? isLightTheme
-                            ? SBUColors.background100
-                            : SBUColors.background400
+                          ? SBUColors.background100
+                          : SBUColors.background400
                       : isLightTheme
-                      ? SBUColors.primaryMain
-                      : SBUColors.primaryLight,
+                          ? SBUColors.primaryMain
+                          : SBUColors.primaryLight,
                   borderRadius: BorderRadius.circular(16.r),
                 ),
                 child: thumbnailWidget != null
@@ -1777,18 +1737,18 @@ class SBUMessageListItemComponentState
         top: widget.isReplyMessageToChannel(message)
             ? 8.h // Check
             : isSameMinuteAtPreviousMessage
-            ? 1.h
-            : 8.h,
+                ? 1.h
+                : 8.h,
         right: 12.w,
         bottom: widget.isReplyMessageToChannel(message)
             ? (messageIndex == 0)
-                  ? 16.h - 6.h
-                  : 8.h - 6.h
+                ? 16.h - 6.h
+                : 8.h - 6.h
             : isSameMinuteAtNextMessage
-            ? 1.h
-            : (messageIndex == 0)
-            ? 16.h
-            : 8.h,
+                ? 1.h
+                : (messageIndex == 0)
+                    ? 16.h
+                    : 8.h,
       ),
       child: child,
     );
@@ -1994,14 +1954,12 @@ class SBUMessageListItemComponentState
 
       result = Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: isMyMessage
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isMyMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: isMyMessage
-                ? MainAxisAlignment.end
-                : MainAxisAlignment.start,
+            mainAxisAlignment:
+                isMyMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
               SizedBox(width: isMyMessage ? 0 : 50.w),
               SBUIconComponent(
