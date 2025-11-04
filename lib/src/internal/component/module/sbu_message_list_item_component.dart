@@ -722,151 +722,100 @@ class SBUMessageListItemComponentState
                   Padding(
                     padding: EdgeInsets.only(left: 12.w, bottom: 4.h),
                     child: SBUTextComponent(
-                      text: widget.getNickname(message.sender, strings),
+                      // text: widget.getNickname(message.sender, strings),
+                      text: 'Test driver name',
                       textType: SBUTextType.caption1,
                       textColorType: SBUTextColorType.text02,
                     ),
                   ),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(16.r),
-                  onTap: () async {
-                    if (widget.onListItemClicked != null) {
-                      widget.onListItemClicked!(collection.channel, message);
-                    }
-                  },
-                  onLongPress: () async {
-                    widget.onListItemClicked?.call(collection.channel, message);
-                    return;
-                    widget.unfocus();
-                    await showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8.r),
-                          topRight: Radius.circular(8.r),
-                        ),
-                      ),
-                      builder: (context) {
-                        return SBUBottomSheetMenuComponent(
-                          channel: collection.channel,
-                          message: message,
-                          iconNames: [
-                            SBUIcons.copy,
-                            if (SBUMarkAsUnreadManager().isOn())
-                              SBUIcons.markAsUnread,
-                            if (SBUReplyManager().isQuoteReplyAvailable(
-                              collection.channel,
-                            ))
-                              SBUIcons.reply,
-                          ],
-                          buttonNames: [
-                            strings.copy,
-                            if (SBUMarkAsUnreadManager().isOn())
-                              strings.markAsUnread,
-                            if (SBUReplyManager().isQuoteReplyAvailable(
-                              collection.channel,
-                            ))
-                              strings.reply,
-                          ],
-                          onButtonClicked: (buttonName) async {
-                            if (buttonName == strings.copy) {
-                              await widget.copyTextToClipboard(
-                                message.message,
-                                strings,
-                              );
-                            } else if (buttonName == strings.markAsUnread) {
-                              await _markAsUnread(collection.channel, message);
-                            } else if (buttonName == strings.reply) {
-                              SBUMessageCollectionProvider()
-                                  .setReplyingToMessage(
-                                    widget.messageCollectionNo,
-                                    message,
-                                  );
-                            }
-                          },
-                          disabledNames: message.isReplyToChannel
-                              ? [strings.reply]
-                              : null,
-                        );
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16.r),
+                      onTap: () async {
+                        if (widget.onListItemClicked != null) {
+                          widget.onListItemClicked!(collection.channel, message);
+                        }
                       },
-                    );
-                  },
-                  child:
-                      SBUOGTagManager().getOGTagMessageItemWidget(
-                        message: message,
-                        collection: collection,
-                        isLightTheme: isLightTheme,
-                        strings: strings,
-                        isMyMessage: false,
-                      ) ??
-                      Container(
-                        padding: EdgeInsets.only(top: 6.h),
-                        decoration: BoxDecoration(
-                          color: isLightTheme
-                              ? SBUColors.background100
-                              : SBUColors.background400,
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 12.w,
-                                right: 12.w,
-                                bottom: 6.h,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Flexible(
-                                    child: SBUTextComponent(
-                                      text: message.message,
-                                      textType: SBUTextType.body3,
-                                      textColorType: SBUTextColorType.text01,
-                                      textOverflowType: null,
-                                      maxLines: null,
-                                    ),
+                      onLongPress: () => 
+                        widget.onListItemClicked?.call(collection.channel, message),
+                      child:
+                          SBUOGTagManager().getOGTagMessageItemWidget(
+                            message: message,
+                            collection: collection,
+                            isLightTheme: isLightTheme,
+                            strings: strings,
+                            isMyMessage: false,
+                          ) ??
+                          Container(
+                            padding: EdgeInsets.only(top: 6.h),
+                            decoration: BoxDecoration(
+                              color: isLightTheme
+                                  ? SBUColors.background100
+                                  : SBUColors.background400,
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 12.w,
+                                    right: 12.w,
+                                    bottom: 6.h,
                                   ),
-                                  if (message.updatedAt > message.createdAt)
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 4.w),
-                                      child: SBUTextComponent(
-                                        text: strings.edited,
-                                        textType: SBUTextType.body3,
-                                        textColorType: SBUTextColorType.text02,
-                                        textOverflowType: null,
-                                        maxLines: null,
-                                      ),
-                                    ),
-                                ],
-                              ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      SBUTextComponent(
+                                          text: message.message,
+                                          textType: SBUTextType.body3,
+                                          textColorType: SBUTextColorType.text01,
+                                          textOverflowType: null,
+                                          maxLines: null,
+                                        ),
+                                      if (message.updatedAt > message.createdAt)
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 4.w),
+                                          child: SBUTextComponent(
+                                            text: strings.edited,
+                                            textType: SBUTextType.body3,
+                                            textColorType: SBUTextColorType.text02,
+                                            textOverflowType: null,
+                                            maxLines: null,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                SBUReactionComponent(
+                                  channel: collection.channel,
+                                  message: message,
+                                ),
+                              ],
                             ),
-                            SBUReactionComponent(
-                              channel: collection.channel,
-                              message: message,
-                            ),
-                          ],
-                        ),
-                      ),
-                ),
+                          ),
+                    ),
+                  ),
+                  Container(
+                    height: 16.h,
+                    alignment: AlignmentDirectional.center,
+                    padding: EdgeInsets.only(left: 4.w),
+                    child: SBUTextComponent(
+                      text: timeString,
+                      textType: SBUTextType.caption4,
+                      textColorType: SBUTextColorType.text03,
+                      transparent: isSameMinuteAtNextMessage,
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ),
-        Container(
-          height: 16.h,
-          alignment: AlignmentDirectional.center,
-          padding: EdgeInsets.only(left: 4.w),
-          child: SBUTextComponent(
-            text: timeString,
-            textType: SBUTextType.caption4,
-            textColorType: SBUTextColorType.text03,
-            transparent: isSameMinuteAtNextMessage,
           ),
         ),
       ],
