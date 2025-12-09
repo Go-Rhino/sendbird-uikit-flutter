@@ -45,8 +45,7 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )?
-  customHeader;
+  )? customHeader;
 
   final Widget Function(
     BuildContext context,
@@ -55,47 +54,41 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
     MessageCollection collection,
     int index,
     BaseMessage message,
-  )?
-  customListItem;
+  )? customListItem;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )?
-  customMessageInput;
+  )? customMessageInput;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )?
-  customLoadingBody;
+  )? customLoadingBody;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )?
-  customEmptyBody;
+  )? customEmptyBody;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
-  )?
-  customErrorScreen;
+  )? customErrorScreen;
 
   final Widget Function(
     BuildContext context,
     SBUTheme theme,
     SBUStrings strings,
     MessageCollection collection,
-  )?
-  customFrozenChannel;
+  )? customFrozenChannel;
 
   const SBUGroupChannelScreen({
     required this.channelUrl,
@@ -187,8 +180,7 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
 
   Future<void> _initialize() async {
     final collectionProvider = SBUMessageCollectionProvider();
-    final channel =
-        await GroupChannel.getChannelFromCache(widget.channelUrl) ??
+    final channel = await GroupChannel.getChannelFromCache(widget.channelUrl) ??
         await GroupChannel.getChannel(widget.channelUrl);
 
     collectionProvider.setMyLastRead(
@@ -371,9 +363,8 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
         ? SBUHeaderComponent(
             width: double.maxFinite,
             height: 56,
-            backgroundColor: isLightTheme
-                ? SBUColors.background50
-                : SBUColors.background500,
+            backgroundColor:
+                isLightTheme ? SBUColors.background50 : SBUColors.background500,
             title: SBUTextComponent(
               text: widget.getGroupChannelName(collection.channel, strings),
               textType: SBUTextType.heading2,
@@ -446,11 +437,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                         }
 
                         int? foundIndex;
-                        for (
-                          int index = 0;
-                          index < collection.messageList.length;
-                          index++
-                        ) {
+                        for (int index = 0;
+                            index < collection.messageList.length;
+                            index++) {
                           if (collection.messageList[index].messageId ==
                               parentMessage.messageId) {
                             foundIndex = index;
@@ -531,25 +520,25 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
     final body = collection == null
         ? widget.getDefaultContainer(isLightTheme)
         : isLoading && collection.messageList.isEmpty
-        ? (widget.customLoadingBody != null
-              ? widget.customLoadingBody!(context, theme, strings, collection)
-              : widget.getDefaultContainer(
-                  isLightTheme,
-                  child: Center(
-                    child: SizedBox(
-                      width: 50.r,
-                      height: 50.r,
-                      child: CircularProgressIndicator(
-                        color: isLightTheme
-                            ? SBUColors.primaryMain
-                            : SBUColors.primaryLight,
-                        strokeWidth: 5.5.r,
+            ? (widget.customLoadingBody != null
+                ? widget.customLoadingBody!(context, theme, strings, collection)
+                : widget.getDefaultContainer(
+                    isLightTheme,
+                    child: Center(
+                      child: SizedBox(
+                        width: 50.r,
+                        height: 50.r,
+                        child: CircularProgressIndicator(
+                          color: isLightTheme
+                              ? SBUColors.primaryMain
+                              : SBUColors.primaryLight,
+                          strokeWidth: 5.5.r,
+                        ),
                       ),
                     ),
-                  ),
-                ))
-        : (collection.messageList.isEmpty
-              ? (widget.customEmptyBody != null
+                  ))
+            : (collection.messageList.isEmpty
+                ? (widget.customEmptyBody != null
                     ? widget.getDefaultContainer(
                         isLightTheme,
                         child: widget.customEmptyBody!(
@@ -567,14 +556,13 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                           text: strings.noMessages,
                         ),
                       ))
-              : list ?? widget.getDefaultContainer(isLightTheme));
+                : list ?? widget.getDefaultContainer(isLightTheme));
 
     final messageInput = collection != null
         ? SBUMessageInputComponent(
             messageCollectionNo: collectionNo!,
-            backgroundColor: isLightTheme
-                ? SBUColors.background50
-                : SBUColors.background600,
+            backgroundColor:
+                isLightTheme ? SBUColors.background50 : SBUColors.background600,
           )
         : null;
 
@@ -592,13 +580,13 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
             collection == null
                 ? widget.getDefaultContainer(isLightTheme)
                 : widget.customHeader != null
-                ? widget.customHeader!(context, theme, strings, collection)
-                : header ??
-                      Container(
-                        color: isLightTheme
-                            ? SBUColors.background50
-                            : SBUColors.background500,
-                      ),
+                    ? widget.customHeader!(context, theme, strings, collection)
+                    : header ??
+                        Container(
+                          color: isLightTheme
+                              ? SBUColors.background50
+                              : SBUColors.background500,
+                        ),
             Expanded(
               child: Container(
                 color: isLightTheme
@@ -611,13 +599,13 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
             collection == null
                 ? widget.getDefaultContainer(isLightTheme)
                 : widget.customMessageInput != null
-                ? widget.customMessageInput!(
-                    context,
-                    theme,
-                    strings,
-                    collection,
-                  )
-                : messageInput ?? widget.getDefaultContainer(isLightTheme),
+                    ? widget.customMessageInput!(
+                        context,
+                        theme,
+                        strings,
+                        collection,
+                      )
+                    : messageInput ?? widget.getDefaultContainer(isLightTheme),
           ],
         ),
         Column(
@@ -627,28 +615,30 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
               collection == null
                   ? widget.getDefaultContainer(isLightTheme)
                   : widget.customFrozenChannel != null
-                  ? widget.customFrozenChannel!(
-                      context,
-                      theme,
-                      strings,
-                      collection,
-                    )
-                  : Container(
-                      width: double.maxFinite,
-                      height: 24.h,
-                      margin: EdgeInsets.only(left: 8.w, top: 64.h, right: 8.w),
-                      decoration: BoxDecoration(
-                        color: SBUColors.informationLight,
-                        borderRadius: BorderRadius.all(Radius.circular(4.r)),
-                      ),
-                      child: Center(
-                        child: SBUTextComponent(
-                          text: strings.channelIsFrozen,
-                          textType: SBUTextType.caption2,
-                          textColorType: SBUTextColorType.information,
+                      ? widget.customFrozenChannel!(
+                          context,
+                          theme,
+                          strings,
+                          collection,
+                        )
+                      : Container(
+                          width: double.maxFinite,
+                          height: 24.h,
+                          margin:
+                              EdgeInsets.only(left: 8.w, top: 64.h, right: 8.w),
+                          decoration: BoxDecoration(
+                            color: SBUColors.informationLight,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.r)),
+                          ),
+                          child: Center(
+                            child: SBUTextComponent(
+                              text: strings.channelIsFrozen,
+                              textType: SBUTextType.caption2,
+                              textColorType: SBUTextColorType.information,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
             if (_showUnreadBadge && unreadMessageCount > 0)
               Column(
                 children: [
@@ -949,8 +939,7 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
       _checkToMarkAsReadOrUnread(collection);
     }
 
-    final showUnreadBadge =
-        (_isNewLineExistsInChannel(collection) &&
+    final showUnreadBadge = (_isNewLineExistsInChannel(collection) &&
         isNewLineVisible == false &&
         collection.channel.unreadMessageCount > 0 &&
         (_canShowUnreadBadge ||
@@ -1068,8 +1057,7 @@ class ItemContext {
         ? deltaTop + size.height - 20
         : deltaTop + size.height; // Check
 
-    final isVisible =
-        (deltaBottom > (hasNewLine ? -10 : 0.0) &&
+    final isVisible = (deltaBottom > (hasNewLine ? -10 : 0.0) &&
         deltaBottom <= vpHeight); // Check
     return isVisible;
   }
