@@ -3,7 +3,6 @@
 import 'package:flutter/painting.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_colors.dart';
 import 'package:sendbird_uikit/src/public/resource/sbu_theme_provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum SBUTextType {
   heading1,
@@ -118,10 +117,10 @@ class SBUTextStyles {
       case SBUTextType.body3:
         return TextStyle(
           fontFamily: fontFamily,
-          fontSize: 14.sp,
+          fontSize: 14,
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.normal,
-          letterSpacing: 0.14,
+          letterSpacing: -0.14,
           height: 20 / 14,
           color: color,
           decorationThickness: 0,
@@ -141,7 +140,7 @@ class SBUTextStyles {
       case SBUTextType.caption1:
         return TextStyle(
           fontFamily: fontFamily,
-          fontSize: 12.sp,
+          fontSize: 12,
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.normal,
           letterSpacing: 0.0,
@@ -174,8 +173,9 @@ class SBUTextStyles {
         return TextStyle(
           fontFamily: fontFamily,
           fontWeight: FontWeight.w400,
-          fontSize: 12.sp,
+          fontSize: 12,
           height: 16 / 12,
+          letterSpacing: 0.01,
           color: color,
           decorationThickness: 0,
           leadingDistribution: TextLeadingDistribution.even,
