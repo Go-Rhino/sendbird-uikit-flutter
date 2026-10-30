@@ -16,6 +16,7 @@ class SBUDialogMenuComponent extends SBUStatefulComponent {
   final void Function(String buttonName) onButtonClicked;
   final bool isYesOrNo;
   final int? errorColorIndex;
+  final int maxLines;
 
   const SBUDialogMenuComponent({
     required this.title,
@@ -23,6 +24,7 @@ class SBUDialogMenuComponent extends SBUStatefulComponent {
     required this.onButtonClicked,
     this.isYesOrNo = false,
     this.errorColorIndex,
+    this.maxLines = 1,
     super.key,
   });
 
@@ -63,6 +65,7 @@ class SBUDialogMenuComponentState extends State<SBUDialogMenuComponent> {
                 text: title,
                 textType: SBUTextType.heading1,
                 textColorType: SBUTextColorType.text01,
+                maxLines: widget.maxLines,
               ),
             ),
             isYesOrNo

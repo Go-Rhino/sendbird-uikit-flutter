@@ -1,16 +1,22 @@
 // Copyright (c) 2024 Sendbird, Inc. All rights reserved.
 
+import 'dart:async';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:sendbird_uikit/sendbird_uikit.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_avatar_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_icon_component.dart';
 import 'package:sendbird_uikit/src/internal/component/basic/sbu_text_component.dart';
+import 'package:sendbird_uikit/src/internal/component/basic/sbu_typing_indicator_bubble_component.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sendbird_uikit/src/internal/utils/sbu_file_send_queue_manager.dart';
+import 'package:sendbird_uikit/src/internal/utils/sbu_typing_indicator_manager.dart';
 
 abstract class SBUStatefulComponent extends StatefulWidget
     with SBUBaseComponent {
@@ -194,7 +200,25 @@ mixin SBUBaseComponent {
     );
   }
 
-  String? getTypingStatus(GroupChannel channel, SBUStrings strings) {
+  String? getChannelListTypingStatusText(
+      GroupChannel channel, SBUStrings strings) {
+    final isOn = SBUTypingIndicatorManager().isChannelListTypingIndicatorOn();
+    if (isOn) {
+      return _getTypingStatusText(channel, strings);
+    }
+    return null;
+  }
+
+  String? getChannelTypingStatusText(GroupChannel channel, SBUStrings strings) {
+    final isOn = SBUTypingIndicatorManager().isChannelTypingIndicatorOn();
+    final type = SBUTypingIndicatorManager().getChannelTypingIndicatorType();
+    if (isOn && type == SBUTypingIndicatorType.text) {
+      return _getTypingStatusText(channel, strings);
+    }
+    return null;
+  }
+
+  String? _getTypingStatusText(GroupChannel channel, SBUStrings strings) {
     final typingUsers = channel.getTypingUsers();
     final count = typingUsers.length;
 
@@ -209,6 +233,26 @@ mixin SBUBaseComponent {
       return strings.severalPeopleAreTyping;
     }
     return null;
+  }
+
+  bool hasTypingStatusBubble(GroupChannel channel) {
+    if (SBUTypingIndicatorManager().isChannelTypingIndicatorOn() &&
+        SBUTypingIndicatorManager().channelTypingIndicatorType ==
+            SBUTypingIndicatorType.bubble) {
+      final typingUsers = channel.getTypingUsers();
+      if (typingUsers.isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Widget getTypingStatusBubble(GroupChannel channel) {
+    final typingUsers = channel.getTypingUsers();
+    if (typingUsers.isNotEmpty) {
+      return SBUTypingIndicatorBubbleComponent(typingUsers: typingUsers);
+    }
+    return const SizedBox.shrink();
   }
 
   SBUIconComponent? getReadStatusIcon(
@@ -245,8 +289,7 @@ mixin SBUBaseComponent {
     return null;
   }
 
-  SBUFileType getFileType(FileMessage message) {
-    String? mimeType = message.type;
+  SBUFileType getFileType(String? mimeType) {
     if (mimeType != null) {
       if (mimeType.startsWith('image')) {
         return SBUFileType.image;
@@ -354,6 +397,10 @@ mixin SBUBaseComponent {
     return SendbirdUIKit().chooseDocument != null;
   }
 
+  bool canChooseFiles() {
+    return SendbirdUIKit().chooseFiles != null;
+  }
+
   // Clipboard
   Future<void> copyTextToClipboard(String text, SBUStrings strings) async {
     await Clipboard.setData(ClipboardData(text: text));
@@ -371,7 +418,7 @@ mixin SBUBaseComponent {
         toastDuration: const Duration(seconds: 4), // Check
         child: Container(
           padding:
-               EdgeInsets.only(left: 12.w, top: 12.h, right: 16.w, bottom: 12.h),
+              EdgeInsets.only(left: 12.w, top: 12.h, right: 16.w, bottom: 12.h),
           decoration: BoxDecoration(
             color: isLightTheme
                 ? SBUColors.background600
@@ -390,7 +437,7 @@ mixin SBUBaseComponent {
                         : SBUColors.secondaryLight)
                     : (isError ? SBUColors.errorMain : SBUColors.secondaryMain),
               ),
-               SizedBox(width: 8.w),
+              SizedBox(width: 8.w),
               SBUTextComponent(
                 text: text,
                 textType: SBUTextType.body3,
@@ -414,5 +461,115 @@ mixin SBUBaseComponent {
   // Test
   bool isThemeTestOn() {
     return false;
+  }
+
+  // sendFileMessage
+  void sendFileMessage({
+    required GroupChannel channel,
+    required FileInfo fileInfo,
+    BaseMessage? replyingToMessage,
+    List<Size>? thumbnailSizes,
+  }) {
+    FileMessageCreateParams params;
+    if (kIsWeb) {
+      if (fileInfo.fileBytes != null) {
+        params = FileMessageCreateParams.withFileBytes(
+          fileInfo.fileBytes!,
+          fileName: fileInfo.fileName,
+          replyToChannel: (replyingToMessage != null),
+          parentMessageId: replyingToMessage?.messageId,
+        )..thumbnailSizes = thumbnailSizes ?? [];
+      } else {
+        return;
+      }
+    } else {
+      if (fileInfo.file != null) {
+        params = FileMessageCreateParams.withFile(
+          fileInfo.file!,
+          fileName: fileInfo.fileName,
+          replyToChannel: (replyingToMessage != null),
+          parentMessageId: replyingToMessage?.messageId,
+        )..thumbnailSizes = thumbnailSizes ?? [];
+      } else {
+        return;
+      }
+    }
+
+    SendbirdUIKit().customParamsHandler?.onBeforeSendFileMessage(params);
+
+    // Use queue manager for sequential file sending
+    SBUFileSendQueueManager().addFileTask(
+      channel: channel,
+      params: params,
+    );
+  }
+
+  // sendMultipleFilesMessage
+  void sendMultipleFilesMessage({
+    required GroupChannel channel,
+    required MultipleFilesMessageCreateParams params,
+    MultipleFilesMessageHandler? handler,
+    FileUploadHandler? fileUploadHandler,
+    BaseMessage? replyingToMessage,
+  }) {
+    List<UploadableFileInfo> imageList = [];
+    List<UploadableFileInfo> otherList = [];
+    for (final uploadableFileInfo in params.uploadableFileInfoList) {
+      if (uploadableFileInfo != null) {
+        final fileType = getFileType(uploadableFileInfo.fileInfo.mimeType);
+        if (fileType == SBUFileType.image) {
+          imageList.add(uploadableFileInfo);
+        } else {
+          otherList.add(uploadableFileInfo);
+        }
+      }
+    }
+
+    if (imageList.isNotEmpty) {
+      if (imageList.length == 1) {
+        // Send single image as file message through queue
+        sendFileMessage(
+          channel: channel,
+          fileInfo: imageList[0].fileInfo,
+          replyingToMessage: replyingToMessage,
+          thumbnailSizes: imageList[0].thumbnailSizes,
+        );
+      } else {
+        // Send multiple images through queue
+        // Take only the first 10 images from the imageList
+        final limitedImageList = imageList.take(10).toList();
+        params.uploadableFileInfoList = limitedImageList;
+
+        if (replyingToMessage != null) {
+          params.replyToChannel = true;
+          params.parentMessageId = replyingToMessage.messageId;
+        }
+
+        SendbirdUIKit()
+            .customParamsHandler
+            ?.onBeforeSendMultipleFilesMessage(params);
+
+        SBUFileSendQueueManager().addMultipleFilesTask(
+          channel: channel,
+          params: params,
+          handler: handler,
+          fileUploadHandler: fileUploadHandler,
+        );
+      }
+    }
+
+    // Process only up to 5 files from otherList
+    final count = (imageList.isNotEmpty ? 4 : 5);
+    final limitedOtherList = otherList.take(count);
+
+    for (final uploadableFileInfo in limitedOtherList) {
+      // Send each non-image file through queue
+      sendFileMessage(
+        channel: channel,
+        fileInfo: uploadableFileInfo.fileInfo,
+        replyingToMessage: replyingToMessage,
+        thumbnailSizes: uploadableFileInfo.thumbnailSizes,
+      );
+    }
   }
 }

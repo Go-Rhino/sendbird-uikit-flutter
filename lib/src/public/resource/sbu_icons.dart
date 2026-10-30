@@ -84,62 +84,64 @@ class SBUIcons {
       const IconData(0xe81e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static IconData leave =
       const IconData(0xe81f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData moderations =
+  static IconData markAsUnread =
       const IconData(0xe820, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData more =
+  static IconData members =
       const IconData(0xe821, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static IconData message =
       const IconData(0xe822, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData members =
+  static IconData moderations =
       const IconData(0xe823, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData mute =
+  static IconData more =
       const IconData(0xe824, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData notificationsFilled =
+  static IconData mute =
       const IconData(0xe825, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData notificationsOffFilled =
+  static IconData notificationsFilled =
       const IconData(0xe826, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData notifications =
+  static IconData notificationsOffFilled =
       const IconData(0xe827, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData operator =
+  static IconData notifications =
       const IconData(0xe828, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData photo =
+  static IconData operator =
       const IconData(0xe829, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData play =
+  static IconData photo =
       const IconData(0xe82a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData plus =
+  static IconData play =
       const IconData(0xe82b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData question =
+  static IconData plus =
       const IconData(0xe82c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData remove =
+  static IconData question =
       const IconData(0xe82d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static IconData refresh =
       const IconData(0xe82e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData replyFilled =
+  static IconData remove =
       const IconData(0xe82f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData reply =
+  static IconData replyFilled =
       const IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData send =
+  static IconData reply =
       const IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static IconData search =
       const IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData settingFilled =
+  static IconData send =
       const IconData(0xe833, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData spinner =
+  static IconData settingFilled =
       const IconData(0xe834, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static IconData spinner =
+      const IconData(0xe835, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static IconData streaming =
       const IconData(0xe836, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static IconData supergroup =
       const IconData(0xe837, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData thumbnailNone =
-      const IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData user =
-      const IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData unarchive =
-      const IconData(0xe83a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static IconData markAsUnread =
-      const IconData(0xe83c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static IconData theme =
-      const IconData(0xe83d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+      const IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static IconData thumbnailNone =
+      const IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static IconData time =
+      const IconData(0xe83a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static IconData unarchive =
+      const IconData(0xe83b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static IconData user =
+      const IconData(0xe83c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 
   /// Sets icons.
   static void setIcons({
@@ -175,10 +177,11 @@ class SBUIcons {
     required IconData gif,
     required IconData info,
     required IconData leave,
+    required IconData markAsUnread,
+    required IconData members,
+    required IconData message,
     required IconData moderations,
     required IconData more,
-    required IconData message,
-    required IconData members,
     required IconData mute,
     required IconData notificationsFilled,
     required IconData notificationsOffFilled,
@@ -192,17 +195,17 @@ class SBUIcons {
     required IconData refresh,
     required IconData replyFilled,
     required IconData reply,
-    required IconData send,
     required IconData search,
+    required IconData send,
     required IconData settingFilled,
     required IconData spinner,
     required IconData streaming,
     required IconData supergroup,
-    required IconData thumbnailNone,
-    required IconData user,
-    required IconData unarchive,
-    required IconData markAsUnread,
     required IconData theme,
+    required IconData thumbnailNone,
+    required IconData time,
+    required IconData unarchive,
+    required IconData user,
   }) {
     SBUIcons.add = add;
     SBUIcons.archive = archive;
@@ -236,10 +239,11 @@ class SBUIcons {
     SBUIcons.gif = gif;
     SBUIcons.info = info;
     SBUIcons.leave = leave;
+    SBUIcons.markAsUnread = markAsUnread;
+    SBUIcons.members = members;
+    SBUIcons.message = message;
     SBUIcons.moderations = moderations;
     SBUIcons.more = more;
-    SBUIcons.message = message;
-    SBUIcons.members = members;
     SBUIcons.mute = mute;
     SBUIcons.notificationsFilled = notificationsFilled;
     SBUIcons.notificationsOffFilled = notificationsOffFilled;
@@ -253,16 +257,16 @@ class SBUIcons {
     SBUIcons.refresh = refresh;
     SBUIcons.replyFilled = replyFilled;
     SBUIcons.reply = reply;
-    SBUIcons.send = send;
     SBUIcons.search = search;
+    SBUIcons.send = send;
     SBUIcons.settingFilled = settingFilled;
     SBUIcons.spinner = spinner;
     SBUIcons.streaming = streaming;
     SBUIcons.supergroup = supergroup;
-    SBUIcons.thumbnailNone = thumbnailNone;
-    SBUIcons.user = user;
-    SBUIcons.unarchive = unarchive;
-    SBUIcons.markAsUnread = markAsUnread;
     SBUIcons.theme = theme;
+    SBUIcons.thumbnailNone = thumbnailNone;
+    SBUIcons.time = time;
+    SBUIcons.unarchive = unarchive;
+    SBUIcons.user = user;
   }
 }

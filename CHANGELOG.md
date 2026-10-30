@@ -1,3 +1,37 @@
+## v1.5.0 (Jul 15, 2026)
+
+### Features
+- Added `SendbirdUIKit.setCustomParamsHandler()` and `SBUCustomParamsHandler` to customize message params before sending or updating (e.g. trimming outgoing messages)
+
+### Improvements
+- Blank (whitespace-only) messages can no longer be sent or saved as edits
+
+## v1.4.1 (Feb 12, 2026)
+
+### Improvements
+- Fixed bugs regarding message huge gap
+
+## v1.4.0 (Jan 16, 2026)
+
+### Features
+- Added `useChannelListTypingIndicator`, `useChannelTypingIndicator` and `channelTypingIndicatorType` parameters in `SendbirdUIKit.init()`
+
+## v1.3.0 (Jan 2, 2026)
+
+### Features
+- Added `chooseFiles` parameter in `SendbirdUIKit.init()`
+- Added `onListItemWithIndexClicked` parameter in `SBUGroupChannelScreen` constructor
+
+## v1.2.1 (Nov 25, 2025)
+
+### Improvements
+- Fixed a bug related to initial theme setting
+
+## v1.2.0 (Oct 29, 2025)
+
+### Features
+- Added a `navigatorKey` parameter in `SendbirdUIKit.init()` to show the delayed connecting dialog
+
 ## v1.1.0 (Jul 30, 2025)
 
 ### Features

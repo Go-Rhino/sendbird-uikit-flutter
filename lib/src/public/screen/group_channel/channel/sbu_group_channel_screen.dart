@@ -20,6 +20,7 @@ import 'package:sendbird_uikit/src/internal/component/module/sbu_message_input_c
 import 'package:sendbird_uikit/src/internal/component/module/sbu_message_list_item_component.dart';
 import 'package:sendbird_uikit/src/internal/provider/sbu_message_collection_provider.dart';
 import 'package:sendbird_uikit/src/internal/resource/sbu_text_styles.dart';
+import 'package:sendbird_uikit/src/internal/utils/sbu_file_send_queue_manager.dart';
 import 'package:sendbird_uikit/src/internal/utils/sbu_mark_as_unread_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -37,6 +38,8 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
   final void Function(GroupChannel)? on1On1ChannelCreated;
   final void Function(GroupChannel, BaseMessage)? onListItemClicked;
   final void Function(User)? onUserIconClicked;
+  final void Function(GroupChannel, BaseMessage, int index)?
+      onListItemWithIndexClicked; // For MultipleFilesMessage
   final double scrollExtentToTriggerPreloading;
   final double cacheExtent;
 
@@ -100,6 +103,7 @@ class SBUGroupChannelScreen extends SBUStatefulComponent {
     this.on1On1ChannelCreated,
     this.onListItemClicked,
     this.onUserIconClicked,
+    this.onListItemWithIndexClicked,
     this.scrollExtentToTriggerPreloading =
         defaultScrollExtentToTriggerPreloading,
     this.cacheExtent = defaultCacheExtent,
@@ -171,6 +175,24 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
         });
       }
     }
+  }
+
+  void _restart() {
+    // Remove old collection
+    if (collectionNo != null) {
+      SBUMessageCollectionProvider().remove(collectionNo!);
+      collectionNo = null;
+    }
+
+    // Reset state
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
+    // Reinitialize
+    _init();
   }
 
   bool _isNewLineExistsInChannel(MessageCollection collection) {
@@ -278,6 +300,12 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
   @override
   void dispose() {
     if (collectionNo != null) {
+      final collection =
+          SBUMessageCollectionProvider().getCollection(collectionNo!);
+      if (collection != null) {
+        SBUFileSendQueueManager().clearQueue(collection.channel.channelUrl);
+      }
+
       SBUMessageCollectionProvider().remove(collectionNo!);
     }
 
@@ -299,6 +327,14 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
     final strings = context.watch<SBUStringProvider>().strings;
 
     final collectionProvider = context.watch<SBUMessageCollectionProvider>();
+
+    // Check if channel needs restart (e.g., due to huge gap detected)
+    if (collectionProvider.needsRestart(widget.channelUrl)) {
+      collectionProvider.clearNeedsRestart(widget.channelUrl);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _restart();
+      });
+    }
 
     if (isError) {
       if (widget.customErrorScreen != null) {
@@ -398,6 +434,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
           )
         : null;
 
+    final isTypingStatusBubble = (collection != null)
+        ? widget.hasTypingStatusBubble(collection.channel)
+        : false;
     final list = collection != null && collection.messageList.isNotEmpty
         ? NotificationListener<UserScrollNotification>(
             onNotification: (notification) {
@@ -417,7 +456,9 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                 controller: scrollController,
                 reverse: true,
                 shrinkWrap: false,
-                itemCount: collection.messageList.length,
+                itemCount: isTypingStatusBubble
+                    ? collection.messageList.length + 1
+                    : collection.messageList.length,
                 cacheExtent: widget.cacheExtent,
                 itemBuilder: (context, index) {
                   Widget listItem = AutoScrollTag(
@@ -428,9 +469,12 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                       messageCollectionNo: collectionNo!,
                       messageList: collection.messageList,
                       messageIndex: index,
+                      isTypingStatusBubble: isTypingStatusBubble,
                       on1On1ChannelCreated: widget.on1On1ChannelCreated,
                       onListItemClicked: widget.onListItemClicked,
                       onUserIconClicked: widget.onUserIconClicked,
+                      onListItemWithIndexClicked:
+                          widget.onListItemWithIndexClicked,
                       onParentMessageClicked: (parentMessage) async {
                         if (isClickedParentMessageAnimating) {
                           return;
@@ -466,12 +510,11 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
                           isClickedParentMessageAnimating = false;
                         }
                       },
-                      key: Key(
-                        widget.getMessageCacheKey(
-                              collection.messageList[index],
-                            ) ??
-                            '',
-                      ),
+                      key: Key(_getKeyString(
+                        collection,
+                        index,
+                        isTypingStatusBubble,
+                      )),
                     ),
                   );
 
@@ -571,6 +614,18 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
     final newMessageCount = (collection?.channel.channelUrl != null)
         ? collectionProvider.getNewMessageCount(collection!.channel.channelUrl)
         : 0;
+
+    double bottomButtonsMargin = 68;
+    final currentCollectionNo = collectionNo;
+    if (currentCollectionNo != null) {
+      if (collectionProvider.getReplyingToMessage(currentCollectionNo) !=
+          null) {
+        bottomButtonsMargin += 46;
+      } else if (collectionProvider.getEditingMessage(currentCollectionNo) !=
+          null) {
+        bottomButtonsMargin += 40;
+      }
+    }
 
     return Stack(
       children: [
@@ -744,7 +799,8 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
               const Expanded(child: SizedBox(width: double.maxFinite)),
               Container(
                 height: 38.h,
-                margin: EdgeInsets.only(left: 58.w, bottom: 68.h, right: 58.w),
+                margin: EdgeInsets.only(
+                    left: 58.w, bottom: bottomButtonsMargin.h, right: 58.w),
                 child: GestureDetector(
                   onTap: () async {
                     if (collection != null) {
@@ -804,7 +860,8 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
               Container(
                 width: 38.r,
                 height: 38.r,
-                margin: EdgeInsets.only(left: 8.w, bottom: 68.h, right: 12.w),
+                margin: EdgeInsets.only(
+                    left: 8.w, bottom: bottomButtonsMargin.h, right: 12.w),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                   decoration: BoxDecoration(
@@ -851,6 +908,29 @@ class SBUGroupChannelScreenState extends State<SBUGroupChannelScreen>
           ),
       ],
     );
+  }
+
+  String _getKeyString(
+    MessageCollection collection,
+    int index,
+    bool isTypingStatusBubble,
+  ) {
+    String keyString = '';
+    if (isTypingStatusBubble) {
+      if (index == 0) {
+        // Use a stable, non-empty key for the typing indicator bubble.
+        keyString = 'typing_indicator_bubble';
+      } else if (index > 0 && (index - 1 < collection.messageList.length)) {
+        keyString =
+            widget.getMessageCacheKey(collection.messageList[index - 1]) ?? '';
+      }
+    } else {
+      if (index < collection.messageList.length) {
+        keyString =
+            widget.getMessageCacheKey(collection.messageList[index]) ?? '';
+      }
+    }
+    return keyString;
   }
 
   Future<void> _scrollToBottom(MessageCollection collection) async {
