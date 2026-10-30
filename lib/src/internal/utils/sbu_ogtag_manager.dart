@@ -78,7 +78,7 @@ class SBUOGTagManager {
                       maxLines: null,
                     ),
                   ),
-                  if (message.updatedAt > message.createdAt)
+                  if (message.updatedAt >= message.createdAt)
                     Padding(
                       padding: EdgeInsets.only(left: 4.w),
                       child: SBUTextComponent(

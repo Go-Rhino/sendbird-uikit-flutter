@@ -12,6 +12,7 @@ enum SBUTextType {
   body1,
   body2,
   body3,
+  body3Bold,
   button,
   caption1,
   caption2,
@@ -122,6 +123,16 @@ class SBUTextStyles {
           fontStyle: FontStyle.normal,
           letterSpacing: -0.14,
           height: 20 / 14,
+          color: color,
+          decorationThickness: 0,
+          leadingDistribution: TextLeadingDistribution.even,
+        );
+      case SBUTextType.body3Bold:
+        return TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w700,
+          fontSize: 14,
+          height: 1.428,
           color: color,
           decorationThickness: 0,
           leadingDistribution: TextLeadingDistribution.even,

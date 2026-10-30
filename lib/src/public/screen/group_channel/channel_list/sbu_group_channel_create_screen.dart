@@ -119,7 +119,10 @@ class SBUGroupChannelCreateScreenState
                       ..name = ''
                       ..isDistinct = false,
                   ).then((channel) {
-                    Navigator.pop(context);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+
                     if (widget.onChannelCreated != null) {
                       widget.onChannelCreated!(channel);
                     }

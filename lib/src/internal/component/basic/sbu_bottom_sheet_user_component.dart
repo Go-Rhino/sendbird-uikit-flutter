@@ -34,98 +34,104 @@ class SBUBottomSheetUserComponentState
     final user = widget.user;
     final on1On1ChannelCreated = widget.on1On1ChannelCreated;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: isLightTheme ? SBUColors.background50 : SBUColors.background500,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8.r),
-          topRight: Radius.circular(8.r),
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color:
+              isLightTheme ? SBUColors.background50 : SBUColors.background500,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8.r),
+            topRight: Radius.circular(8.r),
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 32.h),
-            child: widget.getAvatarComponent(
-              isLightTheme: isLightTheme,
-              size: 80.r,
-              user: user,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.h),
-            child: SBUTextComponent(
-              text: widget.getNickname(user, strings),
-              textType: SBUTextType.heading1,
-              textColorType: SBUTextColorType.text01,
-            ),
-          ),
-          if (on1On1ChannelCreated != null)
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Padding(
-              padding: EdgeInsets.only(left: 24.w, top: 24.h, right: 24.w),
-              child: Material(
-                color: Colors.transparent,
-                child: SBUTextButtonComponent(
-                  width: double.maxFinite,
-                  height: 48.h,
-                  text: SBUTextComponent(
-                    text: strings.message,
-                    textType: SBUTextType.button,
-                    textColorType: SBUTextColorType.text01,
-                  ),
-                  onButtonClicked: () async {
-                    GroupChannel.createChannel(
-                      GroupChannelCreateParams()
-                        ..userIds = [user.userId]
-                        ..operatorUserIds = [SendbirdChat.currentUser!.userId]
-                        ..name = ''
-                        ..isDistinct = false,
-                    ).then((channel) {
-                      Navigator.pop(context);
-
-                      on1On1ChannelCreated(channel);
-                    });
-                  },
-                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                  hasBorder: true,
-                  borderColor: isLightTheme
-                      ? SBUColors.lightThemeTextHighEmphasis
-                      : SBUColors.darkThemeTextHighEmphasis,
-                ),
+              padding: EdgeInsets.only(top: 32.h),
+              child: widget.getAvatarComponent(
+                isLightTheme: isLightTheme,
+                size: 80.r,
+                user: user,
               ),
             ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.w, top: 24.h, right: 16.w,),
-            child: Container(
-              height: 1,
-              color: SBUColors.lightThemeTextDisabled,
-            ),
-          ),
-          SizedBox(
-            width: double.maxFinite,
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.w, top: 24.h, right: 16.w,),
+            Padding(
+              padding: EdgeInsets.only(top: 8.h),
               child: SBUTextComponent(
-                text: strings.userId,
-                textType: SBUTextType.body2,
-                textColorType: SBUTextColorType.text02,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: double.maxFinite,
-            child: Padding(
-              padding:  EdgeInsets.only(
-                  left: 16.w, top: 4.h, right: 16.w, bottom: 24.h,),
-              child: SBUTextComponent(
-                text: user.userId,
-                textType: SBUTextType.body3,
+                text: widget.getNickname(user, strings),
+                textType: SBUTextType.heading1,
                 textColorType: SBUTextColorType.text01,
               ),
             ),
-          ),
-        ],
+            if (on1On1ChannelCreated != null)
+              Padding(
+                padding: EdgeInsets.only(left: 24.w, top: 24.h, right: 24.w),
+                child: Material(
+                  color: Colors.transparent,
+                  child: SBUTextButtonComponent(
+                    width: double.maxFinite,
+                    height: 48.h,
+                    text: SBUTextComponent(
+                      text: strings.message,
+                      textType: SBUTextType.button,
+                      textColorType: SBUTextColorType.text01,
+                    ),
+                    onButtonClicked: () async {
+                      GroupChannel.createChannel(
+                        GroupChannelCreateParams()
+                          ..userIds = [user.userId]
+                          ..operatorUserIds = [SendbirdChat.currentUser!.userId]
+                          ..name = ''
+                          ..isDistinct = false,
+                      ).then((channel) {
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+
+                        on1On1ChannelCreated(channel);
+                      });
+                    },
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                    hasBorder: true,
+                    borderColor: isLightTheme
+                        ? SBUColors.lightThemeTextHighEmphasis
+                        : SBUColors.darkThemeTextHighEmphasis,
+                  ),
+                ),
+              ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w, top: 24.h, right: 16.w),
+              child: Container(
+                height: 1,
+                color: SBUColors.lightThemeTextDisabled,
+              ),
+            ),
+            SizedBox(
+              width: double.maxFinite,
+              child: Padding(
+                padding: EdgeInsets.only(left: 16.w, top: 24.h, right: 16.w),
+                child: SBUTextComponent(
+                  text: strings.userId,
+                  textType: SBUTextType.body2,
+                  textColorType: SBUTextColorType.text02,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.maxFinite,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: 16.w, top: 4.h, right: 16.w, bottom: 24.h),
+                child: SBUTextComponent(
+                  text: user.userId,
+                  textType: SBUTextType.body3,
+                  textColorType: SBUTextColorType.text01,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

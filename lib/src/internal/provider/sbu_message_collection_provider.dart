@@ -15,6 +15,7 @@ class SBUMessageCollectionProvider with ChangeNotifier {
   final Map<int, BaseMessage?> _editingMessageMap = {};
   final Map<int, BaseMessage?> _replyingToMessageMap = {};
   final Map<int, bool?> _deletedChannelMap = {};
+  final Set<String> _needsRestartChannelUrlSet = {};
 
   final Map<String, bool> _isBottomOfScreenMap = {};
   final Map<String, bool> _didMarkAsUnreadMap = {};
@@ -24,6 +25,9 @@ class SBUMessageCollectionProvider with ChangeNotifier {
   final Map<String, bool> _freezeMyLastReadMap = {};
   final Map<String, bool> _enabledNewLineMap = {};
   final Map<String, int> _newMessageCountMap = {};
+
+  // Multiple files message upload tracking
+  final Map<String, Set<int>> _uploadedFileIndicesMap = {};
 
   SBUMessageCollectionProvider._();
 
@@ -77,13 +81,16 @@ class SBUMessageCollectionProvider with ChangeNotifier {
   }
 
   void _restart(String channelUrl) {
-    for (final collectionNo in _getCollectionNoList(channelUrl)) {
-      final collection = _collectionMap[collectionNo];
-      if (collection != null) {
-        remove(collectionNo);
-        add(channel: collection.channel, params: collection.params);
-      }
-    }
+    _needsRestartChannelUrlSet.add(channelUrl);
+    _refresh();
+  }
+
+  bool needsRestart(String channelUrl) {
+    return _needsRestartChannelUrlSet.contains(channelUrl);
+  }
+
+  void clearNeedsRestart(String channelUrl) {
+    _needsRestartChannelUrlSet.remove(channelUrl);
   }
 
   List<int> _getCollectionNoList(String channelUrl) {
@@ -387,6 +394,18 @@ class SBUMessageCollectionProvider with ChangeNotifier {
 
   void _messagesUpdated(MessageContext context, GroupChannel channel,
       List<BaseMessage> messages) {
+    if (context.collectionEventSource ==
+        CollectionEventSource.eventMessageSent) {
+      for (final message in messages) {
+        if (message is MultipleFilesMessage &&
+            message.sendingStatus == SendingStatus.succeeded) {
+          for (final collectionNo in _getCollectionNoList(channel.channelUrl)) {
+            clearUploadedFileIndices(collectionNo, message.requestId);
+          }
+        }
+      }
+    }
+
     if (SBUMarkAsUnreadManager().isOn()) {
       if (context.collectionEventSource ==
           CollectionEventSource.eventMessageSent) {
@@ -579,5 +598,33 @@ class _MyMessageCollectionHandler extends MessageCollectionHandler {
   @override
   void onHugeGapDetected() {
     _provider._restart(_channelUrl);
+  }
+}
+
+extension MultipleFilesUploadTracking on SBUMessageCollectionProvider {
+  void notifyFileUploadCompleted(
+      int collectionNo, String requestId, int index) {
+    final key = '${collectionNo}_$requestId';
+    _uploadedFileIndicesMap[key] ??= {};
+    _uploadedFileIndicesMap[key]!.add(index);
+    _refresh();
+  }
+
+  Set<int> getUploadedFileIndices(int collectionNo, String? requestId) {
+    if (requestId == null) return {};
+    final key = '${collectionNo}_$requestId';
+    return _uploadedFileIndicesMap[key] ?? {};
+  }
+
+  void clearUploadedFileIndices(int collectionNo, String? requestId) {
+    if (requestId == null) return;
+    final key = '${collectionNo}_$requestId';
+    _uploadedFileIndicesMap.remove(key);
+  }
+}
+
+extension TypingIndicatorBubbleTracking on SBUMessageCollectionProvider {
+  void notifyTypingIndicatorBubble(GroupChannel channel) {
+    _refresh(channel.channelUrl);
   }
 }
