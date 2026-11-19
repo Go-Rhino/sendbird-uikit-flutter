@@ -56,10 +56,12 @@ class SBUStrings {
   String replyToMessage;
   String Function(String user) replyTo;
   String Function(String from, String to) repliedTo;
+  String Function(String count) photos;
   String takePhoto;
   String takeVideo;
   String gallery;
   String document;
+  String files;
   String copy;
   String edit;
   String delete;
@@ -72,6 +74,7 @@ class SBUStrings {
   String noName;
   String save;
   String deleteMessage;
+  String Function(String count) doYouWantToDeleteAllPhotos;
   String cancel;
   String edited;
   String message;
@@ -79,6 +82,7 @@ class SBUStrings {
   String noMessages;
   String fileSaved;
   String Function(String uploadSizeLimit) theMaximumSizePerFileIsMB;
+  String Function(String fileCountLimit) upToFilesCanBeAttached;
   String markAsUnread;
   String newMessages;
   String Function(String count) unreadMessageCount;
@@ -117,6 +121,12 @@ class SBUStrings {
   String inviteMembers;
   String invite;
 
+  // Waiting for connection
+  String youWillBeReconnectedShortly;
+  String estimatedWaitingTime;
+  String refresh;
+  String close;
+
   SBUStrings({
     // GroupChannel list
     required this.channels,
@@ -150,10 +160,12 @@ class SBUStrings {
     required this.replyToMessage,
     required this.replyTo,
     required this.repliedTo,
+    required this.photos,
     required this.takePhoto,
     required this.takeVideo,
     required this.gallery,
     required this.document,
+    required this.files,
     required this.copy,
     required this.edit,
     required this.delete,
@@ -166,6 +178,7 @@ class SBUStrings {
     required this.noName,
     required this.save,
     required this.deleteMessage,
+    required this.doYouWantToDeleteAllPhotos,
     required this.cancel,
     required this.edited,
     required this.message,
@@ -173,6 +186,7 @@ class SBUStrings {
     required this.noMessages,
     required this.fileSaved,
     required this.theMaximumSizePerFileIsMB,
+    required this.upToFilesCanBeAttached,
     required this.markAsUnread,
     required this.newMessages,
     required this.unreadMessageCount,
@@ -210,6 +224,12 @@ class SBUStrings {
     // GroupChannel invite
     required this.inviteMembers,
     required this.invite,
+
+    // Waiting for connection
+    required this.youWillBeReconnectedShortly,
+    required this.estimatedWaitingTime,
+    required this.refresh,
+    required this.close,
   });
 
   static SBUStrings defaultStrings = SBUStrings(
@@ -245,10 +265,12 @@ class SBUStrings {
     replyToMessage: 'Reply to message',
     replyTo: (user) => 'Reply to $user',
     repliedTo: (userA, userB) => '$userA replied to $userB',
+    photos: (count) => '$count photos',
     takePhoto: 'Take photo',
     takeVideo: 'Take video',
     gallery: 'Gallery',
     document: 'Document',
+    files: 'Files',
     copy: 'Copy',
     edit: 'Edit',
     delete: 'Delete',
@@ -261,6 +283,8 @@ class SBUStrings {
     noName: '(No name)',
     save: 'Save',
     deleteMessage: 'Delete message?',
+    doYouWantToDeleteAllPhotos: (count) =>
+        'Do you want to delete all $count photos?',
     cancel: 'Cancel',
     edited: '(edited)',
     message: 'Message',
@@ -269,6 +293,8 @@ class SBUStrings {
     fileSaved: 'File saved',
     theMaximumSizePerFileIsMB: (uploadSizeLimit) =>
         'The maximum size per file is $uploadSizeLimit MB',
+    upToFilesCanBeAttached: (fileCountLimit) =>
+        'Up to $fileCountLimit files can be attached',
     markAsUnread: 'Mark as unread',
     newMessages: 'New messages',
     unreadMessageCount: (count) => (int.parse(count) == 1
@@ -311,5 +337,12 @@ class SBUStrings {
     // GroupChannel invite
     inviteMembers: 'Invite members',
     invite: 'Invite',
+
+    // Waiting for connection
+    youWillBeReconnectedShortly:
+        'Something went wrong.\nYou\'ll be reconnected shortly.',
+    estimatedWaitingTime: 'Estimated waiting time:',
+    refresh: 'Refresh',
+    close: 'Close',
   );
 }

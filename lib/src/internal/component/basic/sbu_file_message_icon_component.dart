@@ -34,7 +34,7 @@ class SBUFileMessageIconComponentState
     final iconSize = widget.iconSize;
     final fileMessage = widget.fileMessage;
 
-    final fileType = widget.getFileType(fileMessage);
+    final fileType = widget.getFileType(fileMessage.type);
 
     switch (fileType) {
       case SBUFileType.image:
@@ -47,8 +47,16 @@ class SBUFileMessageIconComponentState
           child: SizedBox(
             width: iconSize,
             height: iconSize,
-            child: SBUThumbnailManager().getThumbnail(
-                  message: fileMessage,
+            child: SBUThumbnailManager().getThumbnailWidget(
+                  isSucceededMessage:
+                      fileMessage.sendingStatus == SendingStatus.succeeded,
+                  requestId: fileMessage.requestId,
+                  messageId: fileMessage.messageId,
+                  multipleFileIndex: null,
+                  thumbnails: fileMessage.thumbnails,
+                  mimeType: fileMessage.type,
+                  secureUrl: fileMessage.secureUrl,
+                  filePath: fileMessage.file?.path,
                   fileType: fileType,
                   isLightTheme: isLightTheme,
                   addGifIcon: false,
